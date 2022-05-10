@@ -15,7 +15,17 @@ function EnterName() {
     }
   });
 
-  return <h1>Enter Name Screen</h1>;
+  return (
+    <div className="enterNameScreen">
+      <form className="enterNameForm" onsubmit="event.preventDefault();">
+        <label for="userName">Enter your name:</label>
+        <input id="userName" type="text" name="userName" required />
+        <button type="submit" class="submitNameBtn">
+          Submit
+        </button>
+      </form>
+    </div>
+  );
 }
 
 export default EnterName;

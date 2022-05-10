@@ -1,0 +1,31 @@
+
+.enterNameScreen {
+    display: flex;
+    height: 50vh;
+    align-items: center;
+    flex-direction: column;
+    justify-content: center;
+}
+
+#errorMsg, #nameTakenErrMsg {
+    font-size: 2em;
+    margin: 1em 1em;
+    color: red;
+}
+
+.submitNameBtn {
+    display: flex;
+    width: auto;
+    font-size: 3em;
+    margin: 1em;
+    justify-content: center;
+}
+
+.enterNameForm {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: center;
+    padding: 1em 1em;
+    margin: 1em 1em;
+}
