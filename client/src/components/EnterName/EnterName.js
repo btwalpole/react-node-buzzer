@@ -1,8 +1,10 @@
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import socket from "../../socket";
 
 function EnterName() {
   let [name, setName] = useState('');
+  let navigate = useNavigate();
 
   useEffect(() => {
     //on page load, check localstorage for session id
@@ -24,6 +26,7 @@ function EnterName() {
     event.preventDefault();
     console.log("name: ", name);
     socket.auth.username = name;
+    navigate('/home')
   }
 
   return (
