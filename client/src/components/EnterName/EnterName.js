@@ -1,10 +1,14 @@
-import { useEffect } from "react";
+import { useState, useEffect } from "react";
 import socket from "../../socket";
 
 function EnterName() {
+  let [name, setName] = useState('');
+
   useEffect(() => {
     //on page load, check localstorage for session id
     //if none, then we connect later on joining/ crating a game
+
+    /* WILL SET THIS UP LATER 
     const sessionID = localStorage.getItem("sessionID");
     if (sessionID) {
       console.log("found a session id: ", sessionID);
@@ -13,14 +17,21 @@ function EnterName() {
     } else {
       console.log("no previous session id found");
     }
+    */
   });
+
+  function handleSubmit(event) {
+    event.preventDefault();
+    console.log("name: ", name);
+    socket.auth.username = name;
+  }
 
   return (
     <div className="enterNameScreen">
-      <form className="enterNameForm" onsubmit="event.preventDefault();">
-        <label for="userName">Enter your name:</label>
-        <input id="userName" type="text" name="userName" required />
-        <button type="submit" class="submitNameBtn">
+      <form className="enterNameForm" onSubmit={event => handleSubmit(event)}>
+        <label htmlFor="userName">Enter your name:</label>
+        <input id="userName" type="text" name="userName" required value={name} onChange={event => setName(event.target.value)}/>
+        <button type="submit" className="submitNameBtn">
           Submit
         </button>
       </form>
