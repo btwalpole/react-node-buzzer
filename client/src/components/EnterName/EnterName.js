@@ -9,8 +9,6 @@ function EnterName() {
   useEffect(() => {
     //on page load, check localstorage for session id
     //if none, then we connect later on joining/ crating a game
-
-    /* WILL SET THIS UP LATER 
     const sessionID = localStorage.getItem("sessionID");
     if (sessionID) {
       console.log("found a session id: ", sessionID);
@@ -19,12 +17,34 @@ function EnterName() {
     } else {
       console.log("no previous session id found");
     }
-    */
-  });
+
+    socket.on("oldSession", ({ userID, roomName, oldUserName }) => {
+      socket.userID = userID;
+      socket.roomName = roomName;
+      userName.value = oldUserName;
+      console.log("got old session event");
+      socket.emit("joinGame", { roomName: socket.roomName});
+    });
+
+    socket.on("clearLocalStorage", () => {
+      console.log("clearing localStorage");
+      localStorage.removeItem("sessionID");
+      socket.auth  = {}
+      socket.disconnect();
+    });
+
+    socket.on("newSession", ({ sessionID, userID }) => {
+      // attach the session ID to the socket for the next reconnection attempts
+      socket.auth = { sessionID };
+      localStorage.setItem("sessionID", sessionID);
+      socket.userID = userID;
+      console.log("got new session event");
+    });    
+  }, []);
 
   function handleSubmit(event) {
     event.preventDefault();
-    console.log("name: ", name);
+    console.log("submitting name: ", name);
     socket.auth.username = name;
     navigate('/home')
   }

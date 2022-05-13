@@ -17,6 +17,8 @@ const io = new Server(httpServer, {
 
 //app.use(router);
 
+httpServer.listen(PORT, () => console.log(`Server started on port ${PORT}`));
+
 const state = {}; //store the state of the buzzer of each room, and the users in it???? - maybe we can just get this with a function
 const sessions = {}; //allows us to look up room name of a given sessionID
 
@@ -44,7 +46,6 @@ io.on("connection", (socket) => {
     console.log('sessionID found in localStorage: ', sessionId)
     // check if we have a reference of this sessionID
     if (sessions[sessionID]) {
-
       // setting values on the socket instance
       socket.sessionID = sessionID;
       socket.userID = sessions[sessionID].userID;
@@ -69,6 +70,19 @@ io.on("connection", (socket) => {
     }
   } else {
     console.log('no sessionID found in localStorage')
+    const username = socket.handshake.auth.username;
+    console.log("username", username);
+    if (!username) {
+      console.log("invalid or no username!!");
+    }
+    socket.sessionID = makeId(10);
+    socket.userID = makeId(15);
+    socket.username = username;
+
+    socket.emit("newSession", {
+      sessionID: socket.sessionID,
+      userID: socket.userID,
+    });
   }
 
   /*
@@ -100,4 +114,13 @@ io.on("connection", (socket) => {
   });
 });
 
-httpServer.listen(PORT, () => console.log(`Server started on port ${PORT}`));
+
+function makeId(length) {
+  var result = "";
+  var characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+  var charactersLength = characters.length;
+  for (var i = 0; i < length; i++) {
+    result += characters.charAt(Math.floor(Math.random() * charactersLength));
+  }
+  return result;
+}
