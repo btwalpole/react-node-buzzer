@@ -9,6 +9,7 @@ function EnterName() {
   useEffect(() => {
     //on page load, check localstorage for session id
     //if none, then we connect later on joining/ crating a game
+    //NEED TO ADD THIS TO EVERY PAGE?
     const sessionID = localStorage.getItem("sessionID");
     if (sessionID) {
       console.log("found a session id: ", sessionID);

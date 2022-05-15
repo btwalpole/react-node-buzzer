@@ -3,6 +3,16 @@ import { useNavigate } from "react-router-dom";
 import socket from "../../socket";
 
 function Home() {
+  /*
+  const sessionID = localStorage.getItem("sessionID");
+    if (sessionID) {
+      console.log("found a session id: ", sessionID);
+      socket.auth.sessionID = sessionID;
+      socket.connect();
+    } else {
+      console.log("no previous session id found");
+    }
+  */
   let navigate = useNavigate();
 
   function handleNewGame(event) {
