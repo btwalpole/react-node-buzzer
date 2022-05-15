@@ -26,24 +26,24 @@ io.on("connection", (socket) => {
   console.log("New socket connected");
   const sessionID = socket.handshake.auth.sessionID;
 
-  //on connection we will have either: 
-    // A) a sessionID present in localStorage already, so user is auto added to room before entering a name
-    // B) no sessionID found, so we've only connected once the user has entered their username
-    // C) a sessionID present in localStorage for which we have no reference server side
+  //on connection we will have either:
+  // A) a sessionID present in localStorage already, so user is auto added to room before entering a name
+  // B) no sessionID found, so we've only connected once the user has entered their username
+  // C) a sessionID present in localStorage for which we have no reference server side
 
   // We pass the username entered in the front end via the socket.auth object, accessible server-side via socket.handshake.auth
-    // In case A, socket.auth.username is not yet set on the client-side so we need to send that to the client to be set for subsequent requests
-    // In case B, socket.auth.username is already set client-side so we just provide the new session ID
-    // In case C, socket.auth.username is not yet set on the client-side but so we tell client side to clear localStorage and await username to be set
+  // In case A, socket.auth.username is not yet set on the client-side so we need to send that to the client to be set for subsequent requests
+  // In case B, socket.auth.username is already set client-side so we just provide the new session ID
+  // In case C, socket.auth.username is not yet set on the client-side but so we tell client side to clear localStorage and await username to be set
 
   //on connection, check if there's a sessionID
-    //if present, check if the sessionID has an associated user etc
-      //if so, we set the session details on the socket. user joins its associated room
-      //if not, tell front end to clear localStorage and assign a new sessionID
-    //if not present, assign one to the user
+  //if present, check if the sessionID has an associated user etc
+  //if so, we set the session details on the socket. user joins its associated room
+  //if not, tell front end to clear localStorage and assign a new sessionID
+  //if not present, assign one to the user
 
   if (sessionID) {
-    console.log('sessionID found in localStorage: ', sessionId)
+    console.log("sessionID found in localStorage: ", sessionID);
     // check if we have a reference of this sessionID
     if (sessions[sessionID]) {
       // setting values on the socket instance
@@ -69,7 +69,7 @@ io.on("connection", (socket) => {
       socket.emit("clearLocalStorage");
     }
   } else {
-    console.log('no sessionID found in localStorage')
+    console.log("no sessionID found in localStorage");
     const username = socket.handshake.auth.username;
     console.log("username", username);
     if (!username) {
@@ -84,6 +84,35 @@ io.on("connection", (socket) => {
       userID: socket.userID,
     });
   }
+
+  socket.on("newGame", function () {
+    console.log("starting new game");
+    const roomName = makeId(5);
+    console.log("newGame socket.sessionID: ", socket.sessionID);
+    console.log("newGame socket.userID: ", socket.userID);
+    console.log("newGame socket.username: ", socket.username);
+
+    sessions[socket.sessionID] = {
+      room: roomName,
+      userID: socket.userID,
+      username: socket.username,
+    };
+
+    //define state of room, set admin as first user
+    state[roomName] = {
+      admin: socket.userID,
+      users: [socket.username],
+      buzzerEnabled: true,
+    };
+
+    socket.join(roomName);
+    socket.emit("enterGameScreen", { admin: state[roomName].admin });
+
+    //send roomName back to user for display, handle this on front end
+    socket.emit("showGameCode", roomName);
+    console.log("players: ", state[roomName].users);
+    io.in(roomName).emit("updatePlayerList", state[roomName].users);
+  });
 
   /*
   socket.on('join', ({name, room}, callback) => {
@@ -113,7 +142,6 @@ io.on("connection", (socket) => {
     console.log("user disconnected");
   });
 });
-
 
 function makeId(length) {
   var result = "";

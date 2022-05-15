@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import socket from "../../socket";
 
 function EnterName() {
-  let [name, setName] = useState('');
+  let [name, setName] = useState("");
   let navigate = useNavigate();
 
   useEffect(() => {
@@ -21,15 +21,15 @@ function EnterName() {
     socket.on("oldSession", ({ userID, roomName, oldUserName }) => {
       socket.userID = userID;
       socket.roomName = roomName;
-      userName.value = oldUserName;
+      socket.username = oldUserName;
       console.log("got old session event");
-      socket.emit("joinGame", { roomName: socket.roomName});
+      socket.emit("joinGame", { roomName: socket.roomName });
     });
 
     socket.on("clearLocalStorage", () => {
       console.log("clearing localStorage");
       localStorage.removeItem("sessionID");
-      socket.auth  = {}
+      socket.auth = {};
       socket.disconnect();
     });
 
@@ -39,21 +39,29 @@ function EnterName() {
       localStorage.setItem("sessionID", sessionID);
       socket.userID = userID;
       console.log("got new session event");
-    });    
+    });
   }, []);
 
   function handleSubmit(event) {
     event.preventDefault();
     console.log("submitting name: ", name);
     socket.auth.username = name;
-    navigate('/home')
+    console.log("socket.auth: ", socket.auth);
+    navigate("/home");
   }
 
   return (
     <div className="enterNameScreen">
-      <form className="enterNameForm" onSubmit={event => handleSubmit(event)}>
+      <form className="enterNameForm" onSubmit={(event) => handleSubmit(event)}>
         <label htmlFor="userName">Enter your name:</label>
-        <input id="userName" type="text" name="userName" required value={name} onChange={event => setName(event.target.value)}/>
+        <input
+          id="userName"
+          type="text"
+          name="userName"
+          required
+          value={name}
+          onChange={(event) => setName(event.target.value)}
+        />
         <button type="submit" className="submitNameBtn">
           Submit
         </button>
