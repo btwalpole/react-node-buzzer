@@ -47,14 +47,13 @@ io.on("connection", (socket) => {
     console.log("sessionID found in localStorage: ", sessionID);
     // check if we have a reference of this sessionID
     if (sessions[sessionID]) {
-      // setting values on the socket instance
+      // sessionID found - setting values on the socket instance
       socket.sessionID = sessionID;
       socket.userID = sessions[sessionID].userID;
       socket.username = sessions[sessionID].username;
-      console.log("found session details: ", sessions[sessionID]);
 
       socket.emit("oldSession", {
-        userID: socket.userID,
+        userID: sessions[sessionID].userID,
         roomName: sessions[sessionID].room,
         oldUserName: socket.username,
       });
@@ -62,42 +61,35 @@ io.on("connection", (socket) => {
       console.log(
         "found sessionID in localStorage " +
           sessionID +
-          " but no session in server!"
-      );
-      console.log(
-        "telling client to remove session from storage and disconnect"
+          " but no session in server! Telling client to remove session from storage and disconnect"
       );
       socket.emit("clearLocalStorage");
     }
   } else {
     console.log("no sessionID found in localStorage");
     const username = socket.handshake.auth.username;
-    console.log("username", username);
+    console.log("username: ", username);
     if (!username) {
       console.log("invalid or no username!!");
     }
-    socket.sessionID = makeId(10);
-    socket.userID = makeId(15);
-    socket.username = username;
+    //we don't yet know the room but can still set  some properties on the sessions object
+    sessionID = makeId(10);
+
+    sessions.sessionID = {
+      userID: makeId(15),
+      username,
+    }
 
     socket.emit("newSession", {
-      sessionID: socket.sessionID,
-      userID: socket.userID,
+      sessionID,
+      userID: sessions.sessionID.userID,
     });
   }
 
   socket.on("newGame", function () {
     console.log("starting new game");
     const roomName = makeId(5);
-    console.log("newGame socket.sessionID: ", socket.sessionID);
-    console.log("newGame socket.userID: ", socket.userID);
-    console.log("newGame socket.username: ", socket.username);
-
-    sessions[socket.sessionID] = {
-      room: roomName,
-      userID: socket.userID,
-      username: socket.username,
-    };
+    sessions.sessionID.room = roomName; //userID and username are already set
 
     //define state of room, set admin as first user
     state[roomName] = {
