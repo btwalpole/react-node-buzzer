@@ -1,15 +1,22 @@
+import './Buzzer.css'
+import {useLocation} from 'react-router-dom';
+
 function Buzzer() {
+  const location = useLocation();
+  let {roomName, username } = location;
+
+
   return (
     <div className="gameScreen">
       <button className="reset" class="disabled-reset" disabled="true">
         Reset
       </button>
       <h1>
-        Your game code: <span className="gameCodeDisplay"></span>
+        Your game code: <span className="gameCodeDisplay">{roomName}</span>
       </h1>
       <div className="nameContainer">
         <h1>
-          Name: <span className="name"></span>
+          Name: <span className="name">{username}</span>
         </h1>
       </div>
 

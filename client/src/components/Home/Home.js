@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import socket from "../../socket";
+import './Home.css'
 
 function Home() {
   /*
@@ -39,10 +40,10 @@ function Home() {
   }
 
   useEffect(() => {
-    socket.on("enterGameScreen", ({ admin }) => {
+    socket.on("enterGameScreen", ({ roomName, username, admin }) => {
       console.log("admin of room is: ", admin);
       console.log("navigating to /sid=12324+roomID=ABCGD");
-      //navigate("/");
+      navigate("/buzzer", {state: {roomName, username}});
     });
   }, []);
 

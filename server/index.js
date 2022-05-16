@@ -12,7 +12,7 @@ const app = express();
 
 const httpServer = createServer(app);
 const io = new Server(httpServer, {
-  cors: { origin: "http://localhost:3000" },
+  cors: { origin: ["http://localhost:3000", "http://3000-btwalpole-reactnodebuzz-sm1gmvmjrdp.ws-eu45.gitpod.io/"] },
 });
 
 //app.use(router);
@@ -106,7 +106,7 @@ io.on("connection", (socket) => {
     };
 
     socket.join(roomName);
-    socket.emit("enterGameScreen", { admin: state[roomName].admin });
+    socket.emit("enterGameScreen", { roomName, username: socket.username, admin: state[roomName].admin });
 
     //send roomName back to user for display, handle this on front end
     socket.emit("showGameCode", roomName);
