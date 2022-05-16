@@ -115,20 +115,32 @@ io.on("connection", (socket) => {
     io.in(roomName).emit("updatePlayerList", state[roomName].users);
   });
 
-  /*
-  socket.on('join', ({name, room}, callback) => {
-    const { error, user } = addUser({ id: socket.id, name, room });
-    if(error) return callback(error);
-
-    socket.join(user.room);
-
-    socket.emit('message', { user: 'admin', text: `${user.name}, welcome to room ${user.room}.`});
-    socket.broadcast.to(user.room).emit('message', { user: 'admin', text: `${user.name} has joined!` });
-
-    io.to(user.room).emit('roomData', { room: user.room, users: getUsersInRoom(user.room) });
-
-    callback();
-  })
+  socket.on("joinGame", function ({ roomName }) {
+    if (state[roomName]) {
+      //first need to check if a player already exists with this name in this room
+      if (state[roomName].users.includes(socket.username)) {
+        socket.emit("userNameTaken", socket.username);
+      } else {
+        //if name not taken, join the room:
+        sessions[socket.sessionID] = {
+          room: roomName,
+          userID: socket.userID,
+          username: socket.username,
+        };
+        state[roomName].users.push(socket.username);
+        socket.join(roomName);
+        socket.emit("enterGameScreen", {
+          roomName,
+          username: socket.username,
+          admin: state[roomName].admin,
+        });
+        io.to(roomName).emit("updatePlayerList", state[roomName].users);
+        io.to(roomName).emit("buzzerState", {buzzerEnabled: state[roomName].buzzerEnabled});
+      }
+    } else {
+      socket.emit("noSuchRoom", roomName);
+    }
+  });
 
   socket.on('sendMessage', (message, callback) => {
     const user = getUser(socket.id);
@@ -137,10 +149,25 @@ io.on("connection", (socket) => {
 
     callback();
   });
-  */
 
   socket.on("disconnect", () => {
-    console.log("user disconnected");
+    console.log(socket.id);
+    console.log('socket.sessionID', socket.sessionID)
+    console.log('sessions[socket.sessionID]', sessions[socket.sessionID])
+    
+    //check if user is in a room
+    if (socket.hasOwnProperty('sessionID')) {
+      if (sessions[socket.sessionID].hasOwnProperty('room')) {
+        const room = sessions[socket.sessionID].room;
+        //remove user from room state
+        console.log('removing ' + socket.username + 'from room: ' + room)
+        const i = state[room].users.indexOf(socket.username);
+        state[room].users.splice(i, 1);
+        io.in(room).emit("updatePlayerList", state[room].users);
+      } else {
+        console.log('no room found to remove the user from')
+      }
+    }
   });
 });
 

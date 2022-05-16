@@ -1,6 +1,5 @@
 
 .gameScreen {
-    display: none;
     align-items: center;
     flex-direction: column;
     justify-content: space-around;

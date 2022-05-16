@@ -5,10 +5,9 @@ function Buzzer() {
   const location = useLocation();
   let {roomName, username } = location;
 
-
   return (
     <div className="gameScreen">
-      <button className="reset" class="disabled-reset" disabled="true">
+      <button className="reset disabled-reset" disabled={true}>
         Reset
       </button>
       <h1>
@@ -23,8 +22,8 @@ function Buzzer() {
       <div className="display">
         <div className="output"></div>
       </div>
-      <button class="enabled-buzzBack buzzBack">
-        <span class="enabled-buzzFront buzzFront">BUZZ ME BABY</span>
+      <button className="enabled-buzzBack buzzBack">
+        <span className="enabled-buzzFront buzzFront">BUZZ ME BABY</span>
       </button>
       <div className="playersContainer">
         <h2>Players:</h2>
