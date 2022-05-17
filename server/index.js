@@ -47,15 +47,10 @@ io.on("connection", (socket) => {
     console.log("sessionID found in localStorage: ", sessionID);
     // check if we have a reference of this sessionID
     if (sessions[sessionID]) {
-      // sessionID found - setting values on the socket instance
-      socket.sessionID = sessionID;
-      socket.userID = sessions[sessionID].userID;
-      socket.username = sessions[sessionID].username;
-
       socket.emit("oldSession", {
-        userID: sessions[sessionID].userID,
-        roomName: sessions[sessionID].room,
-        oldUserName: socket.username,
+        userID: sessions.sessionID.userID,
+        roomName: sessions.sessionID.room,
+        oldUserName: sessions.sessionID.username,
       });
     } else {
       console.log(
@@ -68,13 +63,11 @@ io.on("connection", (socket) => {
   } else {
     console.log("no sessionID found in localStorage");
     const username = socket.handshake.auth.username;
-    console.log("username: ", username);
     if (!username) {
       console.log("invalid or no username!!");
     }
-    //we don't yet know the room but can still set  some properties on the sessions object
+    //set the userID and username on the session
     sessionID = makeId(10);
-
     sessions.sessionID = {
       userID: makeId(15),
       username,
@@ -89,17 +82,18 @@ io.on("connection", (socket) => {
   socket.on("newGame", function () {
     console.log("starting new game");
     const roomName = makeId(5);
-    sessions.sessionID.room = roomName; //userID and username are already set
+    //set room on the session
+    sessions.sessionID.room = roomName; 
 
     //define state of room, set admin as first user
     state[roomName] = {
-      admin: socket.userID,
-      users: [socket.username],
+      admin: sessions.sessionID.userID,
+      users: [sessions.sessionID.username],
       buzzerEnabled: true,
     };
 
     socket.join(roomName);
-    socket.emit("enterGameScreen", { roomName, username: socket.username, admin: state[roomName].admin });
+    socket.emit("enterGameScreen", { roomName, username: sessions.sessionID.username, admin: state[roomName].admin });
 
     //send roomName back to user for display, handle this on front end
     socket.emit("showGameCode", roomName);
@@ -110,20 +104,20 @@ io.on("connection", (socket) => {
   socket.on("joinGame", function ({ roomName }) {
     if (state[roomName]) {
       //first need to check if a player already exists with this name in this room
-      if (state[roomName].users.includes(socket.username)) {
+      if (state[roomName].users.includes(sessions.sessionID.username)) {
         socket.emit("userNameTaken", socket.username);
       } else {
         //if name not taken, join the room:
-        sessions[socket.sessionID] = {
+        sessions[sessionID] = {
           room: roomName,
-          userID: socket.userID,
-          username: socket.username,
+          userID: sessions.sessionID.userID,
+          username: sessions.sessionID.username,
         };
-        state[roomName].users.push(socket.username);
+        state[roomName].users.push(sessions.sessionID.username);
         socket.join(roomName);
         socket.emit("enterGameScreen", {
           roomName,
-          username: socket.username,
+          username: sessions.sessionID.username,
           admin: state[roomName].admin,
         });
         io.to(roomName).emit("updatePlayerList", state[roomName].users);
@@ -143,16 +137,14 @@ io.on("connection", (socket) => {
   });
 
   socket.on("disconnect", () => {
-    console.log(socket.id);
-    console.log('socket.sessionID', socket.sessionID)
-    console.log('sessions[socket.sessionID]', sessions[socket.sessionID])
+    console.log('sessionID ' + sessionID + ' disconnected' )
     
     //check if user is in a room
-    if (socket.hasOwnProperty('sessionID')) {
-      if (sessions[socket.sessionID].hasOwnProperty('room')) {
+    if (sessionID) {
+      if (sessions.sessionID.hasOwnProperty('room')) {
         const room = sessions[socket.sessionID].room;
         //remove user from room state
-        console.log('removing ' + socket.username + 'from room: ' + room)
+        console.log('removing ' + sessions.sessionID.room + 'from room: ' + room)
         const i = state[room].users.indexOf(socket.username);
         state[room].users.splice(i, 1);
         io.in(room).emit("updatePlayerList", state[room].users);
