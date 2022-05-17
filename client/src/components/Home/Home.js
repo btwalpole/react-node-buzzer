@@ -15,6 +15,7 @@ function Home() {
     }
   */
   let navigate = useNavigate();
+  let [roomName, setRoomName ] = useState('')
 
   function handleNewGame(event) {
     event.preventDefault();
@@ -36,7 +37,14 @@ function Home() {
     console.log("now connecting to socket.io");
     socket.connect();
     console.log("now emitting joinGame event");
-    socket.emit("joinGame");
+    socket.emit("joinGame", roomName);
+  }
+
+  function handleRoomName(event) {
+    event.preventDefault();
+    console.log('event.target.value: ', event.target.value)
+    console.log('setting room name to be: ', event.target.value)
+    setRoomName(event.target.value)
   }
 
   useEffect(() => {
@@ -72,7 +80,7 @@ function Home() {
           onSubmit={(event) => handleJoinGame(event)}
         >
           <label htmlFor="gameCode">Enter Game Code:</label>
-          <input id="gameCode" type="text" name="gameCode" required />
+          <input id="gameCode" type="text" name="gameCode" required value={roomName} onChange={event => handleRoomName(event)}/>
           <button type="submit" className="joinGameBtn">
             Join Game
           </button>

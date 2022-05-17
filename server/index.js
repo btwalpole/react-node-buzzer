@@ -106,14 +106,10 @@ io.on("connection", (socket) => {
     if (state[roomName]) {
       //first need to check if a player already exists with this name in this room
       if (state[roomName].users.includes(sessions.sessionID.username)) {
-        socket.emit("userNameTaken", socket.username);
+        socket.emit("userNameTaken", sessions.sessionID.username);
       } else {
         //if name not taken, join the room:
-        sessions[sessionID] = {
-          room: roomName,
-          userID: sessions.sessionID.userID,
-          username: sessions.sessionID.username,
-        };
+        sessions.sessionID.room = roomName,
         state[roomName].users.push(sessions.sessionID.username);
         socket.join(roomName);
         socket.emit("enterGameScreen", {
@@ -129,6 +125,7 @@ io.on("connection", (socket) => {
     }
   });
 
+  /*
   socket.on('sendMessage', (message, callback) => {
     const user = getUser(socket.id);
 
@@ -136,26 +133,28 @@ io.on("connection", (socket) => {
 
     callback();
   });
+  */
 
   socket.on("disconnect", () => {
     console.log('sessionID ' + sessionID + ' disconnected' )
-    
     //check if user is in a room
     if (sessionID) {
-      console.log('sessions.sessionID: ', sessions.sessionID)
-      if (sessions.sessionID.hasOwnProperty('room')) {
-        const room = sessions.sessionID.room;
-        //remove user from room state
-        console.log('removing ' + sessions.sessionID.username + 'from room: ' + room)
-        const i = state[room].users.indexOf(socket.username);
-        state[room].users.splice(i, 1);
-        io.in(room).emit("updatePlayerList", state[room].users);
-        
-        // TODO: 
-        // if room is empty - delete it from the state object
+      if (sessions.sessionID) {
+        console.log('sessions.sessionID: ', sessions.sessionID)
+        if (sessions.sessionID.hasOwnProperty('room')) {
+          const room = sessions.sessionID.room;
+          //remove user from room state
+          console.log('removing ' + sessions.sessionID.username + 'from room: ' + room)
+          const i = state[room].users.indexOf(socket.username);
+          state[room].users.splice(i, 1);
+          io.in(room).emit("updatePlayerList", state[room].users);
+          
+          // TODO: 
+          // if room is empty - delete it from the state object
 
-      } else {
-        console.log('no room found to remove the user from')
+        } else {
+          console.log('no room found to remove the user from')
+        }
       }
     }
   });

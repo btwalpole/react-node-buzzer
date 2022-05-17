@@ -1,12 +1,19 @@
+import { useState, useEffect } from 'react'
+import socket from '../../socket'
 import './Buzzer.css'
 import {useLocation} from 'react-router-dom';
 
 function Buzzer() {
   const location = useLocation();
   let {roomName, username } = location.state;
-  console.log('location: ', location)
-  console.log('roomName: ', roomName)
-  console.log('username: ', username)
+  let [ users, setUsers ] = useState([])
+
+  useEffect(() => {
+    socket.on("updatePlayerList", ({ users }) => {
+      console.log("user array: ", users);
+      setUsers(users)
+    });
+  }, []);
 
   return (
     <div className="gameScreen">
@@ -30,7 +37,11 @@ function Buzzer() {
       </button>
       <div className="playersContainer">
         <h2>Players:</h2>
-        <ul className="players"></ul>
+        <ul className="players">
+          {users.map(user => {
+            <li>{user}</li>
+          })}
+        </ul>
       </div>
     </div>
   );
