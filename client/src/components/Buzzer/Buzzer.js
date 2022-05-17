@@ -3,7 +3,10 @@ import {useLocation} from 'react-router-dom';
 
 function Buzzer() {
   const location = useLocation();
-  let {roomName, username } = location;
+  let {roomName, username } = location.state;
+  console.log('location: ', location)
+  console.log('roomName: ', roomName)
+  console.log('username: ', username)
 
   return (
     <div className="gameScreen">

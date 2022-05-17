@@ -25,7 +25,7 @@ const sessions = {}; //allows us to look up room name of a given sessionID
 
 io.on("connection", (socket) => {
   console.log("New socket connected");
-  const sessionID = socket.handshake.auth.sessionID;
+  let sessionID = socket.handshake.auth.sessionID;
 
   //on connection we will have either:
   // A) a sessionID present in localStorage already, so user is auto added to room before entering a name
@@ -46,7 +46,8 @@ io.on("connection", (socket) => {
   if (sessionID) {
     console.log("sessionID found in localStorage: ", sessionID);
     // check if we have a reference of this sessionID
-    if (sessions[sessionID]) {
+    console.log('sessions.sessionID: ', sessions.sessionID)
+    if (sessions.sessionID) {
       socket.emit("oldSession", {
         userID: sessions.sessionID.userID,
         roomName: sessions.sessionID.room,
@@ -141,13 +142,18 @@ io.on("connection", (socket) => {
     
     //check if user is in a room
     if (sessionID) {
+      console.log('sessions.sessionID: ', sessions.sessionID)
       if (sessions.sessionID.hasOwnProperty('room')) {
-        const room = sessions[socket.sessionID].room;
+        const room = sessions.sessionID.room;
         //remove user from room state
-        console.log('removing ' + sessions.sessionID.room + 'from room: ' + room)
+        console.log('removing ' + sessions.sessionID.username + 'from room: ' + room)
         const i = state[room].users.indexOf(socket.username);
         state[room].users.splice(i, 1);
         io.in(room).emit("updatePlayerList", state[room].users);
+        
+        // TODO: 
+        // if room is empty - delete it from the state object
+
       } else {
         console.log('no room found to remove the user from')
       }

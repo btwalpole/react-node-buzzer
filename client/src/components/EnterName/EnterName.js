@@ -28,6 +28,13 @@ function EnterName() {
       socket.emit("joinGame", { roomName: socket.roomName });
     });
 
+    socket.on("enterGameScreen", ({ roomName, username, admin }) => {
+      console.log("admin of room is: ", admin);
+      console.log(username + ' is entering room ' + roomName)
+      console.log("navigating to /sid=12324+roomID=ABCGD");
+      navigate("/buzzer", {state: {roomName, username}});
+    });
+
     socket.on("clearLocalStorage", () => {
       console.log("clearing localStorage");
       localStorage.removeItem("sessionID");
