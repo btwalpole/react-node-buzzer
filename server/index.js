@@ -103,11 +103,15 @@ io.on("connection", (socket) => {
   });
 
   socket.on("joinGame", function ({ roomName }) {
+    console.log('sessionID ' + sessionID + ' now joining ' + roomName)
     if (state[roomName]) {
+      console.log('state.roomName: ', state.roomName)
       //first need to check if a player already exists with this name in this room
       if (state[roomName].users.includes(sessions.sessionID.username)) {
         socket.emit("userNameTaken", sessions.sessionID.username);
+        console.log('username taken')
       } else {
+        console.log('username not taken')
         //if name not taken, join the room:
         sessions.sessionID.room = roomName,
         state[roomName].users.push(sessions.sessionID.username);

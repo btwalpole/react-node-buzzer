@@ -25,7 +25,7 @@ function EnterName() {
       socket.roomName = roomName;
       socket.username = oldUserName;
       console.log("got old session event");
-      socket.emit("joinGame", { roomName: socket.roomName });
+      socket.emit("joinGame", { roomName });
     });
 
     socket.on("enterGameScreen", ({ roomName, username, admin }) => {

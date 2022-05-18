@@ -36,8 +36,8 @@ function Home() {
     console.log("socket id joining new game: ", socket.id);
     console.log("now connecting to socket.io");
     socket.connect();
-    console.log("now emitting joinGame event");
-    socket.emit("joinGame", roomName);
+    console.log("now emitting joinGame event to join room: ", roomName);
+    socket.emit("joinGame", { roomName });
   }
 
   function handleRoomName(event) {
