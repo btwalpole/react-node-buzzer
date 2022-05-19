@@ -51,7 +51,7 @@ function Home() {
     socket.on("enterGameScreen", ({ roomName, username, admin }) => {
       console.log("admin of room is: ", admin);
       console.log(username + ' is entering room ' + roomName)
-      console.log("navigating to /sid=12324+roomID=ABCGD");
+      console.log("navigating to game screen");
       navigate("/buzzer", {state: {roomName, username}});
     });
   }, []);

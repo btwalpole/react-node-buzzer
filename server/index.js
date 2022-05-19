@@ -99,8 +99,9 @@ io.on("connection", (socket) => {
 
     //send roomName back to user for display, handle this on front end
     socket.emit("showGameCode", roomName);
-    console.log("players: ", state[roomName].users);
-    io.in(roomName).emit("updatePlayerList", state[roomName].users);
+    console.log("emitting players: ", state[roomName].users);
+    console.timeStamp('about to send updatePlayerList');
+    io.in(roomName).emit("updatePlayerList", {users: state[roomName].users});
   });
 
   socket.on("joinGame", function ({ roomName }) {
@@ -154,7 +155,7 @@ io.on("connection", (socket) => {
           console.log('removing ' + sessions[sessionID].username + 'from room: ' + room)
           const i = state[room].users.indexOf(socket.username);
           state[room].users.splice(i, 1);
-          io.in(room).emit("updatePlayerList", state[room].users);
+          io.in(room).emit("updatePlayerList", { users: state[room].users });
           
           // TODO: 
           // if room is empty - delete it from the state object

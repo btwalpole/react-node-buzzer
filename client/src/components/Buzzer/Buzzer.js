@@ -9,6 +9,8 @@ function Buzzer() {
   let [ users, setUsers ] = useState([])
 
   useEffect(() => {
+    console.timeStamp('running useEffect in Buzzer.js to set up UpdatePLayerList Listener')
+    console.log('running useEffect in Buzzer.js to set up UpdatePLayerList Listener')
     socket.on("updatePlayerList", ({ users }) => {
       console.log("user array: ", users);
       setUsers(users)
