@@ -47,6 +47,7 @@ io.on("connection", (socket) => {
     console.log("sessionID found in localStorage: ", sessionID);
     // check if we have a reference of this sessionID
     console.log('sessions.sessionID: ', sessions.sessionID)
+    console.log('sessions: ', sessions)
     if (sessions.sessionID) {
       socket.emit("oldSession", {
         userID: sessions.sessionID.userID,
@@ -104,6 +105,7 @@ io.on("connection", (socket) => {
 
   socket.on("joinGame", function ({ roomName }) {
     console.log('sessionID ' + sessionID + ' now joining ' + roomName)
+    console.log('state on joining: ', state)
     if (state[roomName]) {
       console.log('state.roomName: ', state.roomName)
       //first need to check if a player already exists with this name in this room
