@@ -58,7 +58,7 @@ function Home() {
 
   return (
     <div className="homeScreen">
-      <h1 className="title">Benji's Cool Quiz Buzzer &#128526;</h1>
+      <h1 className="title">Title &#128526;</h1>
       <a
         className="logoAttribution"
         href="https://www.freepik.com/vectors/isometric-illustration"

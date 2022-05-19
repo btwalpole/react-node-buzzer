@@ -33,14 +33,12 @@ function Buzzer() {
         <div className="output"></div>
       </div>
       <button className="enabled-buzzBack buzzBack">
-        <span className="enabled-buzzFront buzzFront">BUZZ ME BABY</span>
+        <span className="enabled-buzzFront buzzFront">B</span>
       </button>
       <div className="playersContainer">
         <h2>Players:</h2>
         <ul className="players">
-          {users.map(user => {
-            <li>{user}</li>
-          })}
+          {users.map(user => <li>{user}</li>)}
         </ul>
       </div>
     </div>
