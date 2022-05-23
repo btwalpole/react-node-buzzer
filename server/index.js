@@ -12,9 +12,13 @@ const app = express();
 
 const httpServer = createServer(app);
 const io = new Server(httpServer, {
-  cors: { origin: "https://3000-btwalpole-reactnodebuzz-sm1gmvmjrdp.ws-eu45.gitpod.io" },
+  cors: {
+    origin: [
+      "https://3000-btwalpole-reactnodebuzz-sm1gmvmjrdp.ws-eu45.gitpod.io",
+      "http://localhost:3000",
+    ],
+  },
 });
-
 
 //app.use(router);
 
@@ -46,8 +50,8 @@ io.on("connection", (socket) => {
   if (sessionID) {
     console.log("sessionID found in localStorage: ", sessionID);
     // check if we have a reference of this sessionID
-    console.log('sessions[sessionID]: ', sessions[sessionID])
-    console.log('sessions: ', sessions)
+    console.log("sessions[sessionID]: ", sessions[sessionID]);
+    console.log("sessions: ", sessions);
     if (sessions[sessionID]) {
       socket.emit("oldSession", {
         userID: sessions[sessionID].userID,
@@ -73,7 +77,7 @@ io.on("connection", (socket) => {
     sessions[sessionID] = {
       userID: makeId(15),
       username,
-    }
+    };
 
     socket.emit("newSession", {
       sessionID,
@@ -85,7 +89,7 @@ io.on("connection", (socket) => {
     console.log("starting new game");
     const roomName = makeId(5);
     //set room on the session
-    sessions[sessionID].room = roomName; 
+    sessions[sessionID].room = roomName;
 
     //define state of room, set admin as first user
     state[roomName] = {
@@ -95,38 +99,51 @@ io.on("connection", (socket) => {
     };
 
     socket.join(roomName);
-    socket.emit("enterGameScreen", { roomName, username: sessions[sessionID].username, admin: state[roomName].admin });
+    socket.emit("enterGameScreen", {
+      roomName,
+      username: sessions[sessionID].username,
+      admin: state[roomName].admin,
+    });
+  });
 
-    //send roomName back to user for display, handle this on front end
-    socket.emit("showGameCode", roomName);
-    console.log("emitting players: ", state[roomName].users);
-    console.timeStamp('about to send updatePlayerList');
-    io.in(roomName).emit("updatePlayerList", {users: state[roomName].users});
+  socket.on("getPlayerList", () => {
+    console.timeStamp("about to send updatePlayerList");
+    let currentRoom = sessions[sessionID].room;
+    io.in(currentRoom).emit("updatePlayerList", {
+      users: state[currentRoom].users,
+    });
   });
 
   socket.on("joinGame", function ({ roomName }) {
-    console.log('sessionID ' + sessionID + ' now joining ' + roomName)
-    console.log('state on joining: ', state)
+    console.log("sessionID " + sessionID + " now joining " + roomName);
+    console.log("state on joining: ", state);
     if (state[roomName]) {
-      console.log('state.roomName: ', state[roomName])
+      console.log("state.roomName: ", state[roomName]);
       //first need to check if a player already exists with this name in this room
       if (state[roomName].users.includes(sessions[sessionID].username)) {
         socket.emit("userNameTaken", sessions[sessionID].username);
-        console.log('username taken')
+        console.log("username taken");
       } else {
-        console.log('username not taken')
+        console.log("username not taken");
         //if name not taken, join the room:
-        sessions[sessionID].room = roomName,
-        state[roomName].users.push(sessions[sessionID].username);
+        (sessions[sessionID].room = roomName),
+          state[roomName].users.push(sessions[sessionID].username);
         socket.join(roomName);
         socket.emit("enterGameScreen", {
           roomName,
           username: sessions[sessionID].username,
           admin: state[roomName].admin,
         });
-        console.log('sending updatePlayerList event to all in room: ', roomName)
-        io.to(roomName).emit("updatePlayerList", { users: state[roomName].users });
-        io.to(roomName).emit("buzzerState", {buzzerEnabled: state[roomName].buzzerEnabled});
+        console.log(
+          "sending updatePlayerList event to all in room: ",
+          roomName
+        );
+        io.to(roomName).emit("updatePlayerList", {
+          users: state[roomName].users,
+        });
+        io.to(roomName).emit("buzzerState", {
+          buzzerEnabled: state[roomName].buzzerEnabled,
+        });
       }
     } else {
       socket.emit("noSuchRoom", roomName);
@@ -144,24 +161,25 @@ io.on("connection", (socket) => {
   */
 
   socket.on("disconnect", () => {
-    console.log('sessionID ' + sessionID + ' disconnected' )
+    console.log("sessionID " + sessionID + " disconnected");
     //check if user is in a room
     if (sessionID) {
       if (sessions[sessionID]) {
-        console.log('sessions[sessionID]: ', sessions[sessionID])
-        if (sessions[sessionID].hasOwnProperty('room')) {
+        console.log("sessions[sessionID]: ", sessions[sessionID]);
+        if (sessions[sessionID].hasOwnProperty("room")) {
           const room = sessions[sessionID].room;
           //remove user from room state
-          console.log('removing ' + sessions[sessionID].username + 'from room: ' + room)
+          console.log(
+            "removing " + sessions[sessionID].username + "from room: " + room
+          );
           const i = state[room].users.indexOf(socket.username);
           state[room].users.splice(i, 1);
           io.in(room).emit("updatePlayerList", { users: state[room].users });
-          
-          // TODO: 
-          // if room is empty - delete it from the state object
 
+          // TODO:
+          // if room is empty - delete it from the state object
         } else {
-          console.log('no room found to remove the user from')
+          console.log("no room found to remove the user from");
         }
       }
     }

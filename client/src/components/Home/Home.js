@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import socket from "../../socket";
-import './Home.css'
+import "./Home.css";
 
 function Home() {
   /*
@@ -15,13 +15,12 @@ function Home() {
     }
   */
   let navigate = useNavigate();
-  let [roomName, setRoomName ] = useState('')
+  let [roomName, setRoomName] = useState("");
 
   function handleNewGame(event) {
     event.preventDefault();
     console.log("socket.auth: ", socket.auth);
     console.log("now creating game as ", socket.auth.username);
-    //socket.auth.username = userName.value;
     console.log("socket id creating new game: ", socket.id);
     console.log("now connecting to socket.io");
     socket.connect();
@@ -42,17 +41,17 @@ function Home() {
 
   function handleRoomName(event) {
     event.preventDefault();
-    console.log('event.target.value: ', event.target.value)
-    console.log('setting room name to be: ', event.target.value)
-    setRoomName(event.target.value)
+    console.log("event.target.value: ", event.target.value);
+    console.log("setting room name to be: ", event.target.value);
+    setRoomName(event.target.value);
   }
 
   useEffect(() => {
     socket.on("enterGameScreen", ({ roomName, username, admin }) => {
       console.log("admin of room is: ", admin);
-      console.log(username + ' is entering room ' + roomName)
+      console.log(username + " is entering room " + roomName);
       console.log("navigating to game screen");
-      navigate("/buzzer", {state: {roomName, username}});
+      navigate("/buzzer", { state: { roomName, username } });
     });
   }, []);
 
@@ -80,7 +79,14 @@ function Home() {
           onSubmit={(event) => handleJoinGame(event)}
         >
           <label htmlFor="gameCode">Enter Game Code:</label>
-          <input id="gameCode" type="text" name="gameCode" required value={roomName} onChange={event => handleRoomName(event)}/>
+          <input
+            id="gameCode"
+            type="text"
+            name="gameCode"
+            required
+            value={roomName}
+            onChange={(event) => handleRoomName(event)}
+          />
           <button type="submit" className="joinGameBtn">
             Join Game
           </button>

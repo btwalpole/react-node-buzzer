@@ -1,20 +1,26 @@
-import { useState, useEffect } from 'react'
-import socket from '../../socket'
-import './Buzzer.css'
-import {useLocation} from 'react-router-dom';
+import { useState, useEffect } from "react";
+import socket from "../../socket";
+import "./Buzzer.css";
+import { useLocation } from "react-router-dom";
 
 function Buzzer() {
   const location = useLocation();
-  let {roomName, username } = location.state;
-  let [ users, setUsers ] = useState([])
+  let { roomName, username } = location.state;
+  let [users, setUsers] = useState([]);
 
   useEffect(() => {
-    console.timeStamp('running useEffect in Buzzer.js to set up UpdatePLayerList Listener')
-    console.log('running useEffect in Buzzer.js to set up UpdatePLayerList Listener')
+    console.log(
+      "running useEffect in Buzzer.js to set up UpdatePLayerList Listener"
+    );
     socket.on("updatePlayerList", ({ users }) => {
       console.log("user array: ", users);
-      setUsers(users)
+      setUsers(users);
     });
+
+    console.log(
+      "emitting getPlayerList to server now that updatePLayerList listener is ready"
+    );
+    socket.emit("getPlayerList");
   }, []);
 
   return (
@@ -40,7 +46,9 @@ function Buzzer() {
       <div className="playersContainer">
         <h2>Players:</h2>
         <ul className="players">
-          {users.map(user => <li>{user}</li>)}
+          {users.map((user) => (
+            <li>{user}</li>
+          ))}
         </ul>
       </div>
     </div>

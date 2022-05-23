@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import socket from "../../socket";
-import './EnterName.css'
+import "./EnterName.css";
 
 function EnterName() {
   let [name, setName] = useState("");
@@ -29,10 +29,8 @@ function EnterName() {
     });
 
     socket.on("enterGameScreen", ({ roomName, username, admin }) => {
-      console.log("admin of room is: ", admin);
-      console.log(username + ' is entering room ' + roomName)
-      console.log("navigating to /sid=12324+roomID=ABCGD");
-      navigate("/buzzer", {state: {roomName, username}});
+      console.log(username + " is entering room " + roomName);
+      navigate("/buzzer", { state: { roomName, username } });
     });
 
     socket.on("clearLocalStorage", () => {
@@ -49,6 +47,11 @@ function EnterName() {
       socket.userID = userID;
       console.log("got new session event");
     });
+
+    return () => {
+      console.log("unmounting enterName - removing all listeners");
+      socket.removeAllListeners();
+    };
   }, []);
 
   function handleSubmit(event) {
