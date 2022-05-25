@@ -1,9 +1,9 @@
 import { useState, useEffect } from "react";
 import socket from "../../socket";
 import "./Buzzer.css";
-import { useLocation } from "react-router-dom";
+//import { useLocation } from "react-router-dom";
 
-function Buzzer() {
+function Buzzer({name, room}) {
   //const location = useLocation();
   //let { roomName, username } = location.state;
   let [users, setUsers] = useState([]);
@@ -29,11 +29,11 @@ function Buzzer() {
         Reset
       </button>
       <h1>
-        Your game code: <span className="gameCodeDisplay">{roomName}</span>
+        Your game code: <span className="gameCodeDisplay">{room}</span>
       </h1>
       <div className="nameContainer">
         <h1>
-          Name: <span className="name">{username}</span>
+          Name: <span className="name">{name}</span>
         </h1>
       </div>
 

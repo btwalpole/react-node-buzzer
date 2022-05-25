@@ -30,6 +30,7 @@ const App = () => {
     //C) newSession event -> now connected with new session, set ID in localStorage and go to Home screen
 
     //how do we conditionally load different components based on the above state?
+    //if we're at first showing the enterName component, we need to lift that state up into this parent component so it can see the name
 
     socket.on("oldSession", ({ userID, roomName, oldUserName }) => {
       socket.userID = userID;
@@ -60,19 +61,21 @@ const App = () => {
       // attach the session ID to the socket for the next reconnection attempts
       socket.auth = { sessionID };
       localStorage.setItem("sessionID", sessionID);
-      socket.userID = userID;
+      socket.userID = userID; //remove this  if not used?
       console.log("got new session event");
     });
 
     return () => {
-      console.log("unmounting enterName - removing all listeners");
+      console.log("removing all listeners");
       socket.removeAllListeners();
+      //also delete / turn off the socket?
     };
   }, []);
+
   return (
     <div>
       {joinedGame === true ? <Buzzer name={name} room={room}/>
-        : nameSubmitted == true ? <Home />
+        : nameSubmitted === true ? <Home />
         : <EnterName />
       }
     </div>
