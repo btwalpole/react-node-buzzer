@@ -4,8 +4,8 @@ import "./Buzzer.css";
 import { useLocation } from "react-router-dom";
 
 function Buzzer() {
-  const location = useLocation();
-  let { roomName, username } = location.state;
+  //const location = useLocation();
+  //let { roomName, username } = location.state;
   let [users, setUsers] = useState([]);
 
   useEffect(() => {
