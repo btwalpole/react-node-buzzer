@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import socket from "../../socket";
 import "./Home.css";
 
-function Home({room, handleRoomChange}) {
+function Home({name, room, handleRoomChange}) {
   
   function handleNewGame(event) {
     event.preventDefault();
@@ -58,7 +58,7 @@ function Home({room, handleRoomChange}) {
       </a>
       <div className="homeForms">
         <h2 className="welcome">
-          Hi <span className="homeUserName"></span>
+          Hi <span className="homeUserName">{name}</span>
         </h2>
         <form onSubmit={(event) => handleNewGame(event)}>
           <button type="submit" className="newGameButton">

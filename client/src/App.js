@@ -97,7 +97,7 @@ const App = () => {
     <div>
       { 
         joinedGame === true ? <Buzzer name={name} room={room} />
-        : nameSubmitted === true ? <Home room={room} handleRoomChange={handleRoomChange} />
+        : nameSubmitted === true ? <Home name={name} room={room} handleRoomChange={handleRoomChange} />
         : <EnterName handleNameChange={handleNameChange} handleSubmitName={handleSubmitName} /> 
       }
     </div>
