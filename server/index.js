@@ -138,6 +138,7 @@ io.on("connection", (socket) => {
           "sending updatePlayerList event to all in room: ",
           roomName
         );
+        //need to make sure the user is in the Buzzer component before we call the below? Or move the listener to App.js?
         io.to(roomName).emit("updatePlayerList", {
           users: state[roomName].users,
         });

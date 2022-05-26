@@ -41,13 +41,13 @@ const App = () => {
   }
 
   function handleJoinGame() {
-    console.log("now joining game as ", socket.auth.username);
+    console.log(name + ' now joining ' + room);
     console.log("now connecting to socket.io");
     socket.connect();
     //if nothing in localStorage, we should now get a newSession event. Does it matter if we emit 'joinGame' before this has been handled? No, since all we do is 
     //save the sessionID in localStorage and add it to the socket.auth object (which will be needed for future connections but not the current one)
-    console.log("now emitting joinGame event to join room: ", room);
-    socket.emit("joinGame", { room });
+    console.log("now emitting joinGame event");
+    socket.emit("joinGame", { roomName: room });
   }
 
   //check localStorage for sessionID
