@@ -1,24 +1,15 @@
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 import socket from "../../socket";
 import "./Home.css";
 
-function Home({name, room, handleRoomChange}) {
+function Home({name, room, handleRoomChange, handleNewGame, handleJoinGame}) {
   
-  function handleNewGame(event) {
+  function handleNewGameSubmit(event) {
     event.preventDefault();
-    console.log("socket.auth: ", socket.auth);
-    console.log("now creating game as ", socket.auth.username);
-    /*
-    console.log("socket id creating new game: ", socket.id);
-    console.log("now connecting to socket.io");
-    socket.connect();
-    console.log("now emitting newGame event");
-    socket.emit("newGame");
-    */
+    handleNewGame();
   }
 
-  function handleJoinGame(event) {
+  function handleJoinGameSubmit(event) {
     event.preventDefault();
     console.log("now joining game as ", socket.auth.username);
     /*
@@ -29,23 +20,12 @@ function Home({name, room, handleRoomChange}) {
     console.log("now emitting joinGame event to join room: ", roomName);
     socket.emit("joinGame", { roomName });
     */
+    handleJoinGame();
   }
   
-
   function handleChange(event) {
     handleRoomChange(event.target.value)
   }
-
-  /*
-  useEffect(() => {
-    socket.on("enterGameScreen", ({ roomName, username, admin }) => {
-      console.log("admin of room is: ", admin);
-      console.log(username + " is entering room " + roomName);
-      console.log("navigating to game screen");
-      navigate("/buzzer", { state: { roomName, username } });
-    });
-  }, []);
-  */
 
   return (
     <div className="homeScreen">
@@ -60,7 +40,7 @@ function Home({name, room, handleRoomChange}) {
         <h2 className="welcome">
           Hi <span className="homeUserName">{name}</span>
         </h2>
-        <form onSubmit={(event) => handleNewGame(event)}>
+        <form onSubmit={(event) => handleNewGameSubmit(event)}>
           <button type="submit" className="newGameButton">
             Create New Game
           </button>
@@ -68,7 +48,7 @@ function Home({name, room, handleRoomChange}) {
         <h2>OR</h2>
         <form
           className="joinGameForm"
-          onSubmit={(event) => handleJoinGame(event)}
+          onSubmit={(event) => handleJoinGameSubmit(event)}
         >
           <label htmlFor="gameCode">Enter Game Code:</label>
           <input

@@ -1,11 +1,8 @@
 import { useState, useEffect } from "react";
 import socket from "../../socket";
 import "./Buzzer.css";
-//import { useLocation } from "react-router-dom";
 
 function Buzzer({name, room}) {
-  //const location = useLocation();
-  //let { roomName, username } = location.state;
   let [users, setUsers] = useState([]);
 
   useEffect(() => {

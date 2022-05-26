@@ -14,7 +14,7 @@ const httpServer = createServer(app);
 const io = new Server(httpServer, {
   cors: {
     origin: [
-      "https://3000-btwalpole-reactnodebuzz-sm1gmvmjrdp.ws-eu45.gitpod.io",
+      "https://3000-btwalpole-reactnodebuzz-sm1gmvmjrdp.ws-eu46.gitpod.io",
       "http://localhost:3000",
     ],
   },
