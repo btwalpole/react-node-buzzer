@@ -85,7 +85,7 @@ const App = () => {
       setName(oldUserName)
       setRoom(roomName)
       setNameSubmitted(true)
-      socket.emit("joinGame", { roomName });
+      socket.emit("joinGame", { roomToJoin: roomName });
     });
 
     socket.on("enterGameScreen", ({ roomToJoin, username, admin }) => {

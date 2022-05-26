@@ -100,7 +100,7 @@ io.on("connection", (socket) => {
 
     socket.join(roomName);
     socket.emit("enterGameScreen", {
-      roomName,
+      roomToJoin: roomName,
       username: sessions[sessionID].username,
       admin: state[roomName].admin,
     });
@@ -134,7 +134,7 @@ io.on("connection", (socket) => {
         console.log('after addition users are: ' + state[roomToJoin].users)
         socket.join(roomToJoin);
         socket.emit("enterGameScreen", {
-          roomName: roomToJoin,
+          roomToJoin,
           username: sessions[sessionID].username,
           admin: state[roomToJoin].admin,
         });
