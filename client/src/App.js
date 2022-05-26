@@ -47,7 +47,7 @@ const App = () => {
     //if nothing in localStorage, we should now get a newSession event. Does it matter if we emit 'joinGame' before this has been handled? No, since all we do is 
     //save the sessionID in localStorage and add it to the socket.auth object (which will be needed for future connections but not the current one)
     console.log("now emitting joinGame event");
-    socket.emit("joinGame", { roomName: room });
+    socket.emit("joinGame", { roomToJoin: room });
   }
 
   //check localStorage for sessionID
@@ -88,9 +88,9 @@ const App = () => {
       socket.emit("joinGame", { roomName });
     });
 
-    socket.on("enterGameScreen", ({ roomName, username, admin }) => {
-      setRoom(roomName)
-      console.log(name + " is entering room " + roomName);
+    socket.on("enterGameScreen", ({ roomToJoin, username, admin }) => {
+      setRoom(roomToJoin)
+      console.log(name + " is entering room " + roomToJoin);
       console.log('join successful');
       setJoinedGame(true) //this should switch us to the Buzzer component
     });

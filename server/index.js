@@ -104,50 +104,54 @@ io.on("connection", (socket) => {
       username: sessions[sessionID].username,
       admin: state[roomName].admin,
     });
+    console.log('new game created. Users: ', state[roomName].users)
   });
 
   socket.on("getPlayerList", () => {
-    console.timeStamp("about to send updatePlayerList");
     let currentRoom = sessions[sessionID].room;
+    console.log('getting playerList: ', state[currentRoom].users)
     io.in(currentRoom).emit("updatePlayerList", {
       users: state[currentRoom].users,
     });
   });
 
-  socket.on("joinGame", function ({ roomName }) {
-    console.log("sessionID " + sessionID + " now joining " + roomName);
+  socket.on("joinGame", function ({ roomToJoin }) {
+    console.log("sessionID " + sessionID + " now joining " + roomToJoin);
     console.log("state on joining: ", state);
-    if (state[roomName]) {
-      console.log("state.roomName: ", state[roomName]);
+    if (state[roomToJoin]) {
+      console.log("state.roomToJoin: ", state[roomToJoin]);
       //first need to check if a player already exists with this name in this room
-      if (state[roomName].users.includes(sessions[sessionID].username)) {
+      if (state[roomToJoin].users.includes(sessions[sessionID].username)) {
         socket.emit("userNameTaken", sessions[sessionID].username);
         console.log("username taken");
       } else {
         console.log("username not taken");
         //if name not taken, join the room:
-        (sessions[sessionID].room = roomName),
-          state[roomName].users.push(sessions[sessionID].username);
-        socket.join(roomName);
+        sessions[sessionID].room = roomToJoin;
+        console.log('adding ' + sessions[sessionID].username + ' to room ' + roomToJoin)
+        console.log('before addition users are: ' + state[roomToJoin].users)
+        state[roomToJoin].users.push(sessions[sessionID].username);
+        console.log('after addition users are: ' + state[roomToJoin].users)
+        socket.join(roomToJoin);
         socket.emit("enterGameScreen", {
-          roomName,
+          roomName: roomToJoin,
           username: sessions[sessionID].username,
-          admin: state[roomName].admin,
+          admin: state[roomToJoin].admin,
         });
         console.log(
           "sending updatePlayerList event to all in room: ",
-          roomName
+          roomToJoin
         );
         //need to make sure the user is in the Buzzer component before we call the below? Or move the listener to App.js?
-        io.to(roomName).emit("updatePlayerList", {
-          users: state[roomName].users,
+        io.to(roomToJoin).emit("updatePlayerList", {
+          users: state[roomToJoin].users,
         });
-        io.to(roomName).emit("buzzerState", {
-          buzzerEnabled: state[roomName].buzzerEnabled,
+        io.to(roomToJoin).emit("buzzerState", {
+          buzzerEnabled: state[roomToJoin].buzzerEnabled,
         });
       }
     } else {
-      socket.emit("noSuchRoom", roomName);
+      socket.emit("noSuchRoom", roomToJoin);
     }
   });
 
@@ -168,14 +172,16 @@ io.on("connection", (socket) => {
       if (sessions[sessionID]) {
         console.log("sessions[sessionID]: ", sessions[sessionID]);
         if (sessions[sessionID].hasOwnProperty("room")) {
-          const room = sessions[sessionID].room;
+          const roomToLeave = sessions[sessionID].room;
           //remove user from room state
           console.log(
-            "removing " + sessions[sessionID].username + "from room: " + room
+            "removing " + sessions[sessionID].username + "from room: " + roomToLeave
           );
-          const i = state[room].users.indexOf(socket.username);
-          state[room].users.splice(i, 1);
-          io.in(room).emit("updatePlayerList", { users: state[room].users });
+          const i = state[roomToLeave].users.indexOf(socket.username);
+          state[roomToLeave].users.splice(i, 1);
+          console.log('users remaining after removal: ', state[roomToLeave].users)
+
+          io.in(roomToLeave).emit("updatePlayerList", { users: state[roomToLeave].users });
 
           // TODO:
           // if room is empty - delete it from the state object
