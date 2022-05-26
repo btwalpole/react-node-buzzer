@@ -9,16 +9,31 @@ const App = () => {
   const [joinedGame, setJoinedGame] = useState(false);
   const [nameSubmitted, setNameSubmitted] = useState(false);
   const [name, setName] = useState('');
-  const [room, setRoomName] = useState('');
+  const [room, setRoom] = useState('');
 
   function handleNameChange(newName) {
     console.log('newName: ', newName)
+    setName(newName)
+  }
+
+  function handleSubmitName() {
+    console.log("submitting name: ", name);
+    socket.auth.username = name;
+    console.log("socket.auth: ", socket.auth);
+    setNameSubmitted(true)
+    //navigate("/home");
+  }
+
+  function handleRoomChange(newRoom) {
+    console.log('newRoom: ', newRoom)
+    setRoom(newRoom)
   }
 
   //check localStorage for sessionID
   useEffect(() => {
     //on page load, check localstorage for session id
     //if none, then we connect later on when joining / creating a game
+    //need to make sure this is actually only running once
     const sessionID = localStorage.getItem("sessionID");
     if (sessionID) {
       console.log("found a session id: ", sessionID);
@@ -45,11 +60,10 @@ const App = () => {
     });
 
     socket.on("enterGameScreen", ({ roomName, username, admin }) => {
-      console.log(username + " is entering room " + roomName);
+      console.log(name + " is entering room " + roomName);
       //navigate("/buzzer", { state: { roomName, username } });
       console.log('join successful');
-      setName(username)
-      setRoomName(roomName)
+      setRoom(roomName)
       //need to wait for the above two to complete before setting the below??
       setJoinedGame(true)
     });
@@ -78,9 +92,10 @@ const App = () => {
 
   return (
     <div>
-      {joinedGame === true ? <Buzzer name={name} room={room}/>
-        : nameSubmitted === true ? <Home />
-        : <EnterName handleNameChange={handleNameChange}/>
+      { 
+        joinedGame === true ? <Buzzer name={name} room={room} />
+        : nameSubmitted === true ? <Home room={room} handleRoomChange={handleRoomChange} />
+        : <EnterName handleNameChange={handleNameChange} handleSubmitName={handleSubmitName} /> 
       }
     </div>
     

@@ -3,16 +3,13 @@ import { useNavigate } from "react-router-dom";
 import socket from "../../socket";
 import "./EnterName.css";
 
-function EnterName({name, handleNameChange}) {
+function EnterName({name, handleNameChange, handleSubmitName}) {
   //let [name, setName] = useState("");
   //let navigate = useNavigate();
 
   function handleSubmit(event) {
     event.preventDefault();
-    console.log("submitting name: ", name);
-    socket.auth.username = name;
-    console.log("socket.auth: ", socket.auth);
-    //navigate("/home");
+    handleSubmitName();
   }
 
   function handleChange(event) {

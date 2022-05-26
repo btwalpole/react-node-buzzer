@@ -3,20 +3,7 @@ import { useNavigate } from "react-router-dom";
 import socket from "../../socket";
 import "./Home.css";
 
-function Home() {
-  /*
-  const sessionID = localStorage.getItem("sessionID");
-    if (sessionID) {
-      console.log("found a session id: ", sessionID);
-      socket.auth.sessionID = sessionID;
-      socket.connect();
-    } else {
-      console.log("no previous session id found");
-    }
-  */
-  let navigate = useNavigate();
-  let [roomName, setRoomName] = useState("");
-
+function Home({room}) {
   function handleNewGame(event) {
     event.preventDefault();
     console.log("socket.auth: ", socket.auth);
@@ -44,6 +31,10 @@ function Home() {
     console.log("event.target.value: ", event.target.value);
     console.log("setting room name to be: ", event.target.value);
     setRoomName(event.target.value);
+  }
+
+  function handleChange(event) {
+    handleRoomChange(event.target.value)
   }
 
   useEffect(() => {
@@ -84,8 +75,8 @@ function Home() {
             type="text"
             name="gameCode"
             required
-            value={roomName}
-            onChange={(event) => handleRoomName(event)}
+            value={room}
+            onChange={(event) => handleChange(event)}
           />
           <button type="submit" className="joinGameBtn">
             Join Game
