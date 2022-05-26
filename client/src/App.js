@@ -11,6 +11,10 @@ const App = () => {
   const [name, setName] = useState('');
   const [room, setRoomName] = useState('');
 
+  function handleNameChange(newName) {
+    console.log('newName: ', newName)
+  }
+
   //check localStorage for sessionID
   useEffect(() => {
     //on page load, check localstorage for session id
@@ -76,7 +80,7 @@ const App = () => {
     <div>
       {joinedGame === true ? <Buzzer name={name} room={room}/>
         : nameSubmitted === true ? <Home />
-        : <EnterName />
+        : <EnterName handleNameChange={handleNameChange}/>
       }
     </div>
     
