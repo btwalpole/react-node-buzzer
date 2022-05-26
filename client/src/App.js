@@ -79,16 +79,14 @@ const App = () => {
 
     //how do we conditionally load different components based on the above state?
     //if we're at first showing the enterName component, we need to lift that state up into this parent component so it can see the name
-    /*
+    
     socket.on("oldSession", ({ userID, roomName, oldUserName }) => {
-      socket.userID = userID;
-      socket.roomName = roomName;
-      socket.username = oldUserName;
       console.log("got old session event");
+      setName(oldUserName)
+      setRoom(roomName)
+      setNameSubmitted(true)
       socket.emit("joinGame", { roomName });
     });
-
-    */
 
     socket.on("enterGameScreen", ({ roomName, username, admin }) => {
       setRoom(roomName)
@@ -97,8 +95,6 @@ const App = () => {
       setJoinedGame(true) //this should switch us to the Buzzer component
     });
 
-    /*
-
     socket.on("clearLocalStorage", () => {
       console.log("clearing localStorage");
       localStorage.removeItem("sessionID");
@@ -106,15 +102,11 @@ const App = () => {
       socket.disconnect();
     });
 
-    
-
     return () => {
       console.log("removing all listeners");
       socket.removeAllListeners();
       //also delete / turn off the socket?
     };
-
-    */
   }, []);
 
   
