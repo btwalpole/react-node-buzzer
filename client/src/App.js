@@ -1,5 +1,5 @@
 import React, { useState, useEffect} from "react";
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import socket from "./socket";
 import "./App.css";
 import EnterName from "./components/EnterName/EnterName";
 import Home from "./components/Home/Home"
@@ -50,7 +50,7 @@ const App = () => {
 
     //how do we conditionally load different components based on the above state?
     //if we're at first showing the enterName component, we need to lift that state up into this parent component so it can see the name
-
+    /*
     socket.on("oldSession", ({ userID, roomName, oldUserName }) => {
       socket.userID = userID;
       socket.roomName = roomName;
@@ -88,8 +88,11 @@ const App = () => {
       socket.removeAllListeners();
       //also delete / turn off the socket?
     };
+
+    */
   }, []);
 
+  
   return (
     <div>
       { 

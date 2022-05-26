@@ -3,40 +3,40 @@ import { useNavigate } from "react-router-dom";
 import socket from "../../socket";
 import "./Home.css";
 
-function Home({room}) {
+function Home({room, handleRoomChange}) {
+  
   function handleNewGame(event) {
     event.preventDefault();
     console.log("socket.auth: ", socket.auth);
     console.log("now creating game as ", socket.auth.username);
+    /*
     console.log("socket id creating new game: ", socket.id);
     console.log("now connecting to socket.io");
     socket.connect();
     console.log("now emitting newGame event");
     socket.emit("newGame");
+    */
   }
 
   function handleJoinGame(event) {
     event.preventDefault();
     console.log("now joining game as ", socket.auth.username);
+    /*
     //socket.auth.username = userName.value;
     console.log("socket id joining new game: ", socket.id);
     console.log("now connecting to socket.io");
     socket.connect();
     console.log("now emitting joinGame event to join room: ", roomName);
     socket.emit("joinGame", { roomName });
+    */
   }
-
-  function handleRoomName(event) {
-    event.preventDefault();
-    console.log("event.target.value: ", event.target.value);
-    console.log("setting room name to be: ", event.target.value);
-    setRoomName(event.target.value);
-  }
+  
 
   function handleChange(event) {
     handleRoomChange(event.target.value)
   }
 
+  /*
   useEffect(() => {
     socket.on("enterGameScreen", ({ roomName, username, admin }) => {
       console.log("admin of room is: ", admin);
@@ -45,6 +45,7 @@ function Home({room}) {
       navigate("/buzzer", { state: { roomName, username } });
     });
   }, []);
+  */
 
   return (
     <div className="homeScreen">
