@@ -51,12 +51,46 @@ function Buzzer({name, room}) {
 
   let winnerText = (
           <div>
-            <p id='nameText'>{winner}</p> <p> buzzed first!!</p> <p id='emoji'>{emoji}</p>
+            <p id='nameText'>{winner}</p> <p> buzzed first!!</p>
           </div>
         )
 
-  return (
+  let buzzBackClassName = 'buzzBack';
+  let buzzFrontClassName = 'buzzFront';
 
+  if(buzzerDisabled) {
+    buzzBackClassName += ' disabled-buzzBack'
+    buzzFrontClassName += ' disabled-buzzFront'
+  } else {
+    buzzBackClassName += ' enabled-buzzBack'
+    buzzFrontClassName += ' enabled-buzzFront'
+  }
+
+  /*
+    function enableBuzzer() {
+    buzzBack[0].disabled = false;
+    buzzBack[0].classList.add("enabled-buzzBack");
+    buzzBack[0].classList.remove("disabled-buzzBack");
+    buzzFront[0].classList.add("enabled-buzzFront");
+    buzzFront[0].classList.remove("disabled-buzzFront");
+    resetBtn.disabled = true;
+    resetBtn.classList.remove("enabled-reset");
+    resetBtn.classList.add("disabled-reset");
+  }
+
+    function disableBuzzer() {
+      buzzBack[0].disabled = true;
+      buzzBack[0].classList.add("disabled-buzzBack");
+      buzzBack[0].classList.remove("enabled-buzzBack");
+      buzzFront[0].classList.add("disabled-buzzFront");
+      buzzFront[0].classList.remove("enabled-buzzFront");
+      resetBtn.disabled = false;
+      resetBtn.classList.add("enabled-reset");
+      resetBtn.classList.remove("disabled-reset");
+    }
+  */
+
+  return (
     <div className="gameScreen">
       <button className="reset disabled-reset" disabled={true}>
         Reset
@@ -75,8 +109,8 @@ function Buzzer({name, room}) {
           {buzzerDisabled ? winnerText : null}
         </div>
       </div>
-      <button className="enabled-buzzBack buzzBack" onClick={handleBuzz}>
-        <span className="enabled-buzzFront buzzFront">B</span>
+      <button className={buzzBackClassName} onClick={handleBuzz} disabled={buzzerDisabled}>
+        <span className={buzzFrontClassName}>B</span>
       </button>
       <div className="playersContainer">
         <h2>Players:</h2>
