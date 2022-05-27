@@ -4,6 +4,10 @@ import "./Buzzer.css";
 
 function Buzzer({name, room}) {
   let [users, setUsers] = useState([]);
+  let [buzzerDisabled, setBuzzerDisabled] = useState(false);
+  let [winner, setWinner] = useState('')
+  let [emoji, setEmoji] = useState('')
+
 
   function handleBuzz() {
     //first disable the buzzer for everyone
@@ -19,6 +23,7 @@ function Buzzer({name, room}) {
 
   function disableBuzzer() {
     console.log('disabling buzzer')
+    setBuzzerDisabled(true)
   }
 
   useEffect(() => {
@@ -30,16 +35,28 @@ function Buzzer({name, room}) {
 
     socket.on("buzzed", function (data) {
       disableBuzzer();
+      setWinner(data.nameBuzzed)
+      setEmoji(emojis[data.emojiNum])
+      /*
       output.innerHTML =
         "<p id='nameText'>" +
         data.name +
         "</p><p>   buzzed first!!</p><p id='emoji'> " +
         emojis[data.emojiNum] +
-        " </p>";
+        " </p>"; */
     });
   }, []);
 
+  //if buzzer is disabled, then someone just buzzed, so we display the below
+
+  let winnerText = (
+          <div>
+            <p id='nameText'>{winner}</p> <p> buzzed first!!</p> <p id='emoji'>{emoji}</p>
+          </div>
+        )
+
   return (
+
     <div className="gameScreen">
       <button className="reset disabled-reset" disabled={true}>
         Reset
@@ -54,7 +71,9 @@ function Buzzer({name, room}) {
       </div>
 
       <div className="display">
-        <div className="output"></div>
+        <div className="output">
+          {buzzerDisabled ? winnerText : null}
+        </div>
       </div>
       <button className="enabled-buzzBack buzzBack" onClick={handleBuzz}>
         <span className="enabled-buzzFront buzzFront">B</span>
