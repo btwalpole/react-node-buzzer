@@ -10,9 +10,9 @@ const App = () => {
   const [nameSubmitted, setNameSubmitted] = useState(false);
   const [name, setName] = useState('');
   const [room, setRoom] = useState('');
+  const [admin, setAdmin] = useState(false);
 
   function handleNameChange(newName) {
-    console.log('newName: ', newName)
     setName(newName)
   }
 
@@ -21,11 +21,9 @@ const App = () => {
     socket.auth.username = name;
     console.log("socket.auth: ", socket.auth);
     setNameSubmitted(true)
-    //navigate("/home");
   }
 
   function handleRoomChange(newRoom) {
-    console.log('newRoom: ', newRoom)
     setRoom(newRoom)
   }
 
@@ -76,9 +74,6 @@ const App = () => {
     //A) oldSession event -> need to emit a joinGame event to server and go to Buzzer if successful
     //B) no details found for sessionID -> clearLocalStorage event -> clearLocalStorage and disconnect
     //C) newSession event -> now connected with new session, set ID in localStorage and go to Home screen
-
-    //how do we conditionally load different components based on the above state?
-    //if we're at first showing the enterName component, we need to lift that state up into this parent component so it can see the name
     
     socket.on("oldSession", ({ userID, roomName, oldUserName }) => {
       console.log("got old session event");
@@ -88,7 +83,13 @@ const App = () => {
       socket.emit("joinGame", { roomToJoin: roomName });
     });
 
-    socket.on("enterGameScreen", ({ roomToJoin, username, admin }) => {
+    socket.on("enterGameScreen", ({ roomToJoin, username, roomAdmin }) => {
+      console.log('roomAdmin: ', roomAdmin)
+      console.log('username: ', username)
+      if(roomAdmin === username) {
+        console.log('user is admin')
+        setAdmin(true);
+      }
       setRoom(roomToJoin)
       console.log(name + " is entering room " + roomToJoin);
       console.log('join successful');
@@ -113,7 +114,7 @@ const App = () => {
   return (
     <div>
       { 
-        joinedGame === true ? <Buzzer name={name} room={room} />
+        joinedGame === true ? <Buzzer name={name} room={room} isAdmin={admin}/>
         : nameSubmitted === true ? <Home name={name} room={room} handleRoomChange={handleRoomChange} handleNewGame={handleNewGame} handleJoinGame={handleJoinGame}/>
         : <EnterName handleNameChange={handleNameChange} handleSubmitName={handleSubmitName} /> 
       }

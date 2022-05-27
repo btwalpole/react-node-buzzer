@@ -2,7 +2,8 @@ import { useState, useEffect } from "react";
 import socket from "../../socket";
 import "./Buzzer.css";
 
-function Buzzer({name, room}) {
+function Buzzer({name, room, isAdmin}) {
+  console.log('isAdmin: ', isAdmin)
   //when we first load the Buzzer we want to check if the user is admin, if so then we render the reset button
   let [users, setUsers] = useState([]);
   let [buzzerDisabled, setBuzzerDisabled] = useState(false);
@@ -37,18 +38,10 @@ function Buzzer({name, room}) {
       disableBuzzer();
       setWinner(data.nameBuzzed)
       setEmoji(emojis[data.emojiNum])
-      /*
-      output.innerHTML =
-        "<p id='nameText'>" +
-        data.name +
-        "</p><p>   buzzed first!!</p><p id='emoji'> " +
-        emojis[data.emojiNum] +
-        " </p>"; */
     });
   }, []);
 
   //if buzzer is disabled, then someone just buzzed, so we display the below
-
   let winnerText = (
           <div>
             <p id='nameText'>{winner}</p> <p> buzzed first!!</p>
@@ -68,35 +61,11 @@ function Buzzer({name, room}) {
     resetClassName += ' disabled-reset'
   }
 
-  /*
-    function enableBuzzer() {
-    buzzBack[0].disabled = false;
-    buzzBack[0].classList.add("enabled-buzzBack");
-    buzzBack[0].classList.remove("disabled-buzzBack");
-    buzzFront[0].classList.add("enabled-buzzFront");
-    buzzFront[0].classList.remove("disabled-buzzFront");
-    resetBtn.disabled = true;
-    resetBtn.classList.remove("enabled-reset");
-    resetBtn.classList.add("disabled-reset");
-  }
-
-    function disableBuzzer() {
-      buzzBack[0].disabled = true;
-      buzzBack[0].classList.add("disabled-buzzBack");
-      buzzBack[0].classList.remove("enabled-buzzBack");
-      buzzFront[0].classList.add("disabled-buzzFront");
-      buzzFront[0].classList.remove("enabled-buzzFront");
-      resetBtn.disabled = false;
-      resetBtn.classList.add("enabled-reset");
-      resetBtn.classList.remove("disabled-reset");
-    }
-  */
-
   return (
     <div className="gameScreen">
-      <button className="reset disabled-reset" disabled={true}>
-        Reset
-      </button>
+      {isAdmin ? (<button className={resetClassName} disabled={!buzzerDisabled}>
+          Reset
+        </button>) : null}
       <h1>
         Your game code: <span className="gameCodeDisplay">{room}</span>
       </h1>

@@ -93,7 +93,7 @@ io.on("connection", (socket) => {
 
     //define state of room, set admin as first user
     state[roomName] = {
-      admin: sessions[sessionID].userID,
+      admin: sessions[sessionID].username,
       users: [sessions[sessionID].username],
       buzzerEnabled: true,
     };
@@ -102,7 +102,7 @@ io.on("connection", (socket) => {
     socket.emit("enterGameScreen", {
       roomToJoin: roomName,
       username: sessions[sessionID].username,
-      admin: state[roomName].admin,
+      roomAdmin: state[roomName].admin,
     });
     console.log('new game created. Users: ', state[roomName].users)
   });
@@ -136,7 +136,7 @@ io.on("connection", (socket) => {
         socket.emit("enterGameScreen", {
           roomToJoin,
           username: sessions[sessionID].username,
-          admin: state[roomToJoin].admin,
+          roomAdmin: state[roomToJoin].admin,
         });
         console.log(
           "sending updatePlayerList event to all in room: ",
