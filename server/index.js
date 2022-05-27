@@ -155,6 +155,11 @@ io.on("connection", (socket) => {
     }
   });
 
+  socket.on("buzz", function (data) {
+    state[data.roomBuzzed].buzzerEnabled = false;
+    io.to(data.roomBuzzed).emit("buzzed", data);
+  });
+
   /*
   socket.on('sendMessage', (message, callback) => {
     const user = getUser(socket.id);
@@ -170,14 +175,14 @@ io.on("connection", (socket) => {
     //check if user is in a room
     if (sessionID) {
       if (sessions[sessionID]) {
-        console.log("sessions[sessionID]: ", sessions[sessionID]);
+        console.log("disconnecting sessions[sessionID]: ", sessions[sessionID]);
         if (sessions[sessionID].hasOwnProperty("room")) {
           const roomToLeave = sessions[sessionID].room;
           //remove user from room state
           console.log(
             "removing " + sessions[sessionID].username + "from room: " + roomToLeave
           );
-          const i = state[roomToLeave].users.indexOf(socket.username);
+          const i = state[roomToLeave].users.indexOf(sessions[sessionID].username);
           state[roomToLeave].users.splice(i, 1);
           console.log('users remaining after removal: ', state[roomToLeave].users)
 

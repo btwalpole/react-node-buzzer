@@ -5,19 +5,38 @@ import "./Buzzer.css";
 function Buzzer({name, room}) {
   let [users, setUsers] = useState([]);
 
+  function handleBuzz() {
+    //first disable the buzzer for everyone
+    console.log(name + ' buzzed!')
+    const random = Math.floor(Math.random() * emojis.length);
+
+    socket.emit("buzz", {
+      nameBuzzed: name,
+      roomBuzzed: room,
+      emojiNum: random
+    });
+  }
+
+  function disableBuzzer() {
+    console.log('disabling buzzer')
+  }
+
   useEffect(() => {
-    console.log(
-      "running useEffect in Buzzer.js to set up UpdatePLayerList Listener"
-    );
     socket.on("updatePlayerList", ({ users }) => {
       console.log("user array: ", users);
       setUsers(users);
     });
-
-    console.log(
-      "emitting getPlayerList to server now that updatePLayerList listener is ready"
-    );
     socket.emit("getPlayerList");
+
+    socket.on("buzzed", function (data) {
+      disableBuzzer();
+      output.innerHTML =
+        "<p id='nameText'>" +
+        data.name +
+        "</p><p>   buzzed first!!</p><p id='emoji'> " +
+        emojis[data.emojiNum] +
+        " </p>";
+    });
   }, []);
 
   return (
@@ -37,7 +56,7 @@ function Buzzer({name, room}) {
       <div className="display">
         <div className="output"></div>
       </div>
-      <button className="enabled-buzzBack buzzBack">
+      <button className="enabled-buzzBack buzzBack" onClick={handleBuzz}>
         <span className="enabled-buzzFront buzzFront">B</span>
       </button>
       <div className="playersContainer">
@@ -53,3 +72,29 @@ function Buzzer({name, room}) {
 }
 
 export default Buzzer;
+
+const emojis = [
+  "&#128512;",
+  "&#128526;",
+  "&#128519;",
+  "&#128587;&#127998;",
+  "&#128591;&#127998;",
+  "&#128680;",
+  "&#128718;",
+  "&#129310;",
+  "&#129305;&#127996;",
+  "&#129322;",
+  "&#129335;",
+  "&#129351;",
+  "&#129365;",
+  "&#129419;",
+  "&#129425;",
+  "&#129428;",
+  "&#129504;",
+  "&#128170;&#127996;",
+  "&#11088;",
+  "&#127752;",
+  "&#127790;",
+  "&#127803;",
+  "&#127850;",
+];
