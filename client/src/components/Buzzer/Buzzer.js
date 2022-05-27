@@ -3,11 +3,11 @@ import socket from "../../socket";
 import "./Buzzer.css";
 
 function Buzzer({name, room}) {
+  //when we first load the Buzzer we want to check if the user is admin, if so then we render the reset button
   let [users, setUsers] = useState([]);
   let [buzzerDisabled, setBuzzerDisabled] = useState(false);
   let [winner, setWinner] = useState('')
   let [emoji, setEmoji] = useState('')
-
 
   function handleBuzz() {
     //first disable the buzzer for everyone
@@ -57,13 +57,15 @@ function Buzzer({name, room}) {
 
   let buzzBackClassName = 'buzzBack';
   let buzzFrontClassName = 'buzzFront';
-
+  let resetClassName = 'reset'
   if(buzzerDisabled) {
     buzzBackClassName += ' disabled-buzzBack'
     buzzFrontClassName += ' disabled-buzzFront'
+    resetClassName += ' enabled-reset'
   } else {
     buzzBackClassName += ' enabled-buzzBack'
     buzzFrontClassName += ' enabled-buzzFront'
+    resetClassName += ' disabled-reset'
   }
 
   /*
