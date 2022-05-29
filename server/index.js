@@ -104,12 +104,12 @@ io.on("connection", (socket) => {
       username: sessions[sessionID].username,
       roomAdmin: state[roomName].admin,
     });
-    console.log('new game created. Users: ', state[roomName].users)
+    console.log("new game created. Users: ", state[roomName].users);
   });
 
   socket.on("getPlayerList", () => {
     let currentRoom = sessions[sessionID].room;
-    console.log('getting playerList: ', state[currentRoom].users)
+    console.log("getting playerList: ", state[currentRoom].users);
     io.in(currentRoom).emit("updatePlayerList", {
       users: state[currentRoom].users,
     });
@@ -128,10 +128,12 @@ io.on("connection", (socket) => {
         console.log("username not taken");
         //if name not taken, join the room:
         sessions[sessionID].room = roomToJoin;
-        console.log('adding ' + sessions[sessionID].username + ' to room ' + roomToJoin)
-        console.log('before addition users are: ' + state[roomToJoin].users)
+        console.log(
+          "adding " + sessions[sessionID].username + " to room " + roomToJoin
+        );
+        console.log("before addition users are: " + state[roomToJoin].users);
         state[roomToJoin].users.push(sessions[sessionID].username);
-        console.log('after addition users are: ' + state[roomToJoin].users)
+        console.log("after addition users are: " + state[roomToJoin].users);
         socket.join(roomToJoin);
         socket.emit("enterGameScreen", {
           roomToJoin,
@@ -160,6 +162,11 @@ io.on("connection", (socket) => {
     io.to(data.roomBuzzed).emit("buzzed", data);
   });
 
+  socket.on("reset", function ({ roomReset }) {
+    state[roomReset].buzzerEnabled = true;
+    io.to(roomReset).emit("reset");
+  });
+
   /*
   socket.on('sendMessage', (message, callback) => {
     const user = getUser(socket.id);
@@ -180,13 +187,23 @@ io.on("connection", (socket) => {
           const roomToLeave = sessions[sessionID].room;
           //remove user from room state
           console.log(
-            "removing " + sessions[sessionID].username + "from room: " + roomToLeave
+            "removing " +
+              sessions[sessionID].username +
+              "from room: " +
+              roomToLeave
           );
-          const i = state[roomToLeave].users.indexOf(sessions[sessionID].username);
+          const i = state[roomToLeave].users.indexOf(
+            sessions[sessionID].username
+          );
           state[roomToLeave].users.splice(i, 1);
-          console.log('users remaining after removal: ', state[roomToLeave].users)
+          console.log(
+            "users remaining after removal: ",
+            state[roomToLeave].users
+          );
 
-          io.in(roomToLeave).emit("updatePlayerList", { users: state[roomToLeave].users });
+          io.in(roomToLeave).emit("updatePlayerList", {
+            users: state[roomToLeave].users,
+          });
 
           // TODO:
           // if room is empty - delete it from the state object
