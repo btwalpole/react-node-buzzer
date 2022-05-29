@@ -49,6 +49,7 @@ function Buzzer({ name, room, isAdmin }) {
         console.log("disabling buzzer");
       }
     });
+    socket.emit("getBuzzerState");
 
     socket.on("buzzed", function (data) {
       disableBuzzer();

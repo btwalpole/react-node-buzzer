@@ -107,14 +107,6 @@ io.on("connection", (socket) => {
     console.log("new game created. Users: ", state[roomName].users);
   });
 
-  socket.on("getPlayerList", () => {
-    let currentRoom = sessions[sessionID].room;
-    console.log("getting playerList: ", state[currentRoom].users);
-    io.in(currentRoom).emit("updatePlayerList", {
-      users: state[currentRoom].users,
-    });
-  });
-
   socket.on("joinGame", function ({ roomToJoin }) {
     console.log("sessionID " + sessionID + " now joining " + roomToJoin);
     console.log("state on joining: ", state);
@@ -144,17 +136,24 @@ io.on("connection", (socket) => {
           "sending updatePlayerList event to all in room: ",
           roomToJoin
         );
-        //need to make sure the user is in the Buzzer component before we call the below? Or move the listener to App.js?
-        io.to(roomToJoin).emit("updatePlayerList", {
-          users: state[roomToJoin].users,
-        });
-        io.to(roomToJoin).emit("buzzerState", {
-          buzzerEnabled: state[roomToJoin].buzzerEnabled,
-        });
       }
     } else {
       socket.emit("noSuchRoom", roomToJoin);
     }
+  });
+
+  socket.on("getBuzzerState", () => {
+    io.to(sessions[sessionID].room).emit("buzzerState", {
+      buzzerEnabled: state[sessions[sessionID].room].buzzerEnabled,
+    });
+  });
+
+  socket.on("getPlayerList", () => {
+    let currentRoom = sessions[sessionID].room;
+    console.log("getting playerList: ", state[currentRoom].users);
+    io.in(currentRoom).emit("updatePlayerList", {
+      users: state[currentRoom].users,
+    });
   });
 
   socket.on("buzz", function (data) {
