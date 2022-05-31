@@ -3,6 +3,7 @@ import socket from "../../socket";
 import "./Home.css";
 
 function Home({name, room, handleRoomChange, handleNewGame, handleJoinGame}) {
+  const [roomValid, setRoomValid] = useState(true)
   
   function handleNewGameSubmit(event) {
     event.preventDefault();
@@ -12,20 +13,23 @@ function Home({name, room, handleRoomChange, handleNewGame, handleJoinGame}) {
   function handleJoinGameSubmit(event) {
     event.preventDefault();
     console.log("now joining game as ", socket.auth.username);
-    /*
-    //socket.auth.username = userName.value;
-    console.log("socket id joining new game: ", socket.id);
-    console.log("now connecting to socket.io");
-    socket.connect();
-    console.log("now emitting joinGame event to join room: ", roomName);
-    socket.emit("joinGame", { roomName });
-    */
     handleJoinGame();
   }
   
   function handleChange(event) {
     handleRoomChange(event.target.value)
   }
+
+  useEffect(() => {
+    socket.on("noSuchRoom", (roomName) => {
+      setRoomValid(false)
+      console.log("entered room " + roomName + " does not exist");
+    });
+  }, [])
+
+  const errorMsg = (
+    <p className="roomInvalid">No such room exists!</p>
+  )
 
   return (
     <div className="homeScreen">
@@ -59,6 +63,7 @@ function Home({name, room, handleRoomChange, handleNewGame, handleJoinGame}) {
             value={room}
             onChange={(event) => handleChange(event)}
           />
+          {!roomValid ? errorMsg : null}
           <button type="submit" className="joinGameBtn">
             Join Game
           </button>

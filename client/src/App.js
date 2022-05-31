@@ -80,7 +80,11 @@ const App = () => {
       setName(oldUserName)
       setRoom(roomName)
       setNameSubmitted(true)
-      socket.emit("joinGame", { roomToJoin: roomName });
+      if(roomName) {
+        socket.emit("joinGame", { roomToJoin: roomName });
+      } else {
+        console.log('old session event but no associated room')
+      }
     });
 
     socket.on("enterGameScreen", ({ roomToJoin, username, roomAdmin }) => {

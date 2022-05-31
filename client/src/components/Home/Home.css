@@ -83,6 +83,10 @@
     border-radius: 5px;
 }
 
+.roomInvalid {
+    color: red;
+}
+
 input:invalid {
     border: 2px solid red;
 }
