@@ -7,20 +7,6 @@
     justify-content: center;
 }
 
-#errorMsg, #nameTakenErrMsg {
-    font-size: 2em;
-    margin: 1em 1em;
-    color: red;
-}
-
-.submitNameBtn {
-    display: flex;
-    width: auto;
-    font-size: 3em;
-    margin: 1em;
-    justify-content: center;
-}
-
 .enterNameForm {
     display: flex;
     align-items: center;
@@ -28,4 +14,27 @@
     justify-content: center;
     padding: 1em 1em;
     margin: 1em 1em;
+}
+
+input {
+    border: 2px solid green;
+}
+
+#errorMsg, #nameTakenErrMsg {
+    font-size: 2em;
+    margin: 1em 1em;
+    color: rgb(231, 61, 61);
+}
+
+.submitNameBtn {
+    display: flex;
+    width: auto;
+    font-size: 1.5em;
+    margin: 1em;
+    justify-content: center;
+    background-color: hsl(210deg,15%,20%);
+    color: hsl(0deg,0%,95%);
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
 }
