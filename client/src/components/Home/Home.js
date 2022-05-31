@@ -42,7 +42,7 @@ function Home({name, room, handleRoomChange, handleNewGame, handleJoinGame}) {
       </a>
       <div className="homeForms">
         <h2 className="welcome">
-          Hi <span className="homeUserName">{name}!</span>
+          Hi <span className="homeUserName">{name}</span>!
         </h2>
         <form onSubmit={(event) => handleNewGameSubmit(event)}>
           <button type="submit" className="newGameButton">
