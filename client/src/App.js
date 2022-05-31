@@ -112,7 +112,7 @@ const App = () => {
 
   
   return (
-    <div>
+    <div className='container'>
       { 
         joinedGame === true ? <Buzzer name={name} room={room} isAdmin={admin}/>
         : nameSubmitted === true ? <Home name={name} room={room} handleRoomChange={handleRoomChange} handleNewGame={handleNewGame} handleJoinGame={handleJoinGame}/>
