@@ -16,11 +16,15 @@
     margin: 1em 1em;
 }
 
-input {
+.enterNameScreen input {
     padding: 2px;
     margin: 10px;
     font-size: 1em;
     height: 50px;
+}
+
+.enterNameScreen label {
+    font-size: 1.3em;
 }
 
 #errorMsg, #nameTakenErrMsg {
