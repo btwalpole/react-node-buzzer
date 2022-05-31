@@ -1,6 +1,3 @@
-import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-import socket from "../../socket";
 import "./EnterName.css";
 
 function EnterName({name, handleNameChange, handleSubmitName}) {
@@ -25,6 +22,8 @@ function EnterName({name, handleNameChange, handleSubmitName}) {
           type="text"
           name="userName"
           required
+          maxlength="15"
+          pattern="^[a-zA-Z]\p{L}+$"
           value={name}
           onChange={(event) => handleChange(event)}
         />
