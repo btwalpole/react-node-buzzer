@@ -29,7 +29,7 @@ function Home({name, room, handleRoomChange, handleNewGame, handleJoinGame}) {
 
   return (
     <div className="homeScreen">
-      <h1 className="title">Title &#128526;</h1>
+      <h1 className="title">Epic Quiz Buzzer</h1>
       <a
         className="logoAttribution"
         href="https://www.freepik.com/vectors/isometric-illustration"
@@ -38,7 +38,7 @@ function Home({name, room, handleRoomChange, handleNewGame, handleJoinGame}) {
       </a>
       <div className="homeForms">
         <h2 className="welcome">
-          Hi <span className="homeUserName">{name}</span>
+          Hi <span className="homeUserName">{name}!</span>
         </h2>
         <form onSubmit={(event) => handleNewGameSubmit(event)}>
           <button type="submit" className="newGameButton">

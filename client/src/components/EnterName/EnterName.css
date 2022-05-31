@@ -17,7 +17,10 @@
 }
 
 input {
-    border: 2px solid green;
+    padding: 2px;
+    margin: 10px;
+    font-size: 1em;
+    height: 50px;
 }
 
 #errorMsg, #nameTakenErrMsg {
@@ -30,10 +33,11 @@ input {
     display: flex;
     width: auto;
     font-size: 1.5em;
+    font-weight: 600;
     margin: 1em;
     justify-content: center;
     background-color: hsl(210deg,15%,20%);
-    color: hsl(0deg,0%,95%);
+    color: hsl(0deg,0%,100%);
     padding: 10px 20px;
     border: none;
     border-radius: 5px;
