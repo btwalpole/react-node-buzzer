@@ -1,8 +1,14 @@
 
 .gameScreen {
+    display: flex;
     align-items: center;
     flex-direction: column;
     justify-content: space-around;
+    width: 100%;
+}
+
+h1 {
+    border: 2px solid blue;
 }
 
 .gameScreen .display {
