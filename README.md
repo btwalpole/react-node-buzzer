@@ -1,22 +1,10 @@
 # react-node-buzzer
 <div id="top"></div>
 
-<!-- PROJECT SHIELDS -->
-<!--
-*** I'm using markdown "reference style" links for readability.
-*** Reference links are enclosed in brackets [ ] instead of parentheses ( ).
-*** See the bottom of this document for the declaration of the reference variables
-*** for contributors-url, forks-url, etc. This is an optional, concise syntax you may use.
-*** https://www.markdownguide.org/basic-syntax/#reference-style-links
--->
-
-[![LinkedIn][linkedin-shield]][linkedin-url]
-
-
 <!-- PROJECT LOGO -->
 <br />
 <div align="center">
-  <a href="https://github.com/othneildrew/Best-README-Template">
+  <a href="">
     <img src="client/public/quizLogo.jpg" alt="Logo" width="200" height="200">
   </a>
 
@@ -149,6 +137,8 @@ To run this locally, clone the repo, install the dependencies and start up the r
 
 Ben Walpole - btm.walpole@gmail.com
 
+[LinkedIn](www.linkedin.com/in/ben-walpole-64a63310a)
+
 Project Link: [https://github.com/btwalpole/react-node-buzzer](https://github.com/btwalpole/react-node-buzzer)
 
 <p align="right">(<a href="#top">back to top</a>)</p>
@@ -165,8 +155,3 @@ Some awesome resources that have helped me on this project:
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
-<!-- MARKDOWN LINKS & IMAGES -->
-<!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
-[linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
-[linkedin-url]: www.linkedin.com/in/ben-walpole-64a63310a
-[product-screenshot]: images/screenshot.png
