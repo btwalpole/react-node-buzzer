@@ -1,8 +1,6 @@
 # react-node-buzzer
 <div id="top"></div>
 
-
-
 <!-- PROJECT SHIELDS -->
 <!--
 *** I'm using markdown "reference style" links for readability.
@@ -11,39 +9,23 @@
 *** for contributors-url, forks-url, etc. This is an optional, concise syntax you may use.
 *** https://www.markdownguide.org/basic-syntax/#reference-style-links
 -->
-[![Contributors][contributors-shield]][contributors-url]
-[![Forks][forks-shield]][forks-url]
-[![Stargazers][stars-shield]][stars-url]
-[![Issues][issues-shield]][issues-url]
-[![MIT License][license-shield]][license-url]
-[![LinkedIn][linkedin-shield]][linkedin-url]
 
+[![LinkedIn][linkedin-shield]][linkedin-url]
 
 
 <!-- PROJECT LOGO -->
 <br />
 <div align="center">
   <a href="https://github.com/othneildrew/Best-README-Template">
-    <img src="images/logo.png" alt="Logo" width="80" height="80">
+    <img src="client/public/quizLogo.jpg" alt="Logo" width="200" height="200">
   </a>
 
-  <h3 align="center">Best-README-Template</h3>
+  <h3 align="center">Multiplayer Quiz Buzzer</h3>
 
   <p align="center">
-    An awesome README template to jumpstart your projects!
-    <br />
-    <a href="https://github.com/othneildrew/Best-README-Template"><strong>Explore the docs »</strong></a>
-    <br />
-    <br />
-    <a href="https://github.com/othneildrew/Best-README-Template">View Demo</a>
-    ·
-    <a href="https://github.com/othneildrew/Best-README-Template/issues">Report Bug</a>
-    ·
-    <a href="https://github.com/othneildrew/Best-README-Template/issues">Request Feature</a>
+    A multiplayer buzzer 
   </p>
 </div>
-
-
 
 <!-- TABLE OF CONTENTS -->
 <details>
@@ -78,41 +60,44 @@
 
 [![Product Name Screen Shot][product-screenshot]](https://example.com)
 
-There are many great README templates available on GitHub; however, I didn't find one that really suited my needs so I created this enhanced one. I want to create a README template so amazing that it'll be the last one you ever need -- I think this is it.
+In 2021 I decided I wanted to host a quiz for my friends. A little tired of playing the same games every time we all got together, I thought it would be fun to switch it up (mostly I think I just wanted the opportunity to channel the cheery disdain of Jeremy Paxman).
 
-Here's why:
-* Your time should be focused on creating something amazing. A project that solves a problem and helps others
-* You shouldn't be doing the same tasks over and over like creating a README from scratch
-* You should implement DRY principles to the rest of your life :smile:
+While hosting a [University Challenge](https://en.wikipedia.org/wiki/University_Challenge) style quiz for my friends, I bought one little reception bell for each team. I found it was a lot trickier than expected to tell who buzzed in first, leading to a lot of aggrieved competitors!
 
-Of course, no one template will serve all projects since your needs may be different. So I'll be adding more in the near future. You may also suggest changes by forking this repo and creating a pull request or opening an issue. Thanks to all the people have contributed to expanding this template!
-
-Use the `BLANK_README.md` to get started.
-
-<p align="right">(<a href="#top">back to top</a>)</p>
-
-
-
-### Built With
-
-This section should list any major frameworks/libraries used to bootstrap your project. Leave any add-ons/plugins for the acknowledgements section. Here are a few examples.
+To provide an impartial (and more accurate!) judge, I made a multiplayer buzzer system using:
 
 * [React.js](https://reactjs.org/)
 * [Node JS](https://nodejs.org/en/)
 * [Socket.io](https://socket.io/)
 
+This is not a revolutionary idea! But having made some simple React applications before, I thought this would be a great project to teach myself Node JS and WebSockets.
+
+<!-- USAGE EXAMPLES -->
+## How It Works
+
+A user should start with a prompt to enter their name. Once submitted, they are routed to a screen providing the option to either host their own game or join an existing one. This is all rendered with React. 
+
+On trying to create or join a game, an attempt is made to connect to the Socket.io server which acts as a source of truth for the state of all users and the games they're in. If successful, you should be sent to the buzzer screen. On buzzing, all users in the same game will be alerted to who buzzed first and the buzzer will be disabled until the game admin (the user who created the game) re-enables it.
+
+When successfully creating or joining a game, a unique session ID will be saved in local storage in the browser. The username and room associated with this session ID on the server side. This means that if, for example, the user's device is locked, they can refresh the page and rejoin the room, ensuring the room state is correct. It's important in particular that the buzz button is in the same state for all users in a given room.
+
 <p align="right">(<a href="#top">back to top</a>)</p>
+
+## Reflections and Lessons Learned
+
+### Persisting Sessions
+
+### Handling page navigation
+
+### Managing communication and state across client and server
 
 
 <!-- GETTING STARTED -->
 ## Getting Started
 
-This is an example of how you may give instructions on setting up your project locally.
-To get a local copy up and running follow these simple example steps.
-
 ### Prerequisites
 
-This is an example of how to list things you need to use the software and how to install them.
+The only prerequisite is to have npm installed on your machine.
 * npm
   ```sh
   npm install npm@latest -g
@@ -120,31 +105,24 @@ This is an example of how to list things you need to use the software and how to
 
 ### Installation
 
-_Below is an example of how you can instruct your audience on installing and setting up your app. This template doesn't rely on any external dependencies or services._
+To run this locally, clone the repo, install the dependencies and start up the react app and node server respectively:
 
-11. Clone the repo
+1. Clone the repo
    ```sh
-   git clone https://github.com/your_username_/Project-Name.git
+   git clone https://github.com/btwalpole/react-node-buzzer.git
    ```
-3. Install NPM packages
+3. Install client side dependencies
    ```sh
+   cd client
    npm install
+   npm start
    ```
-4. Enter your API in `config.js`
-   ```js
-   const API_KEY = 'ENTER YOUR API';
+3. Install server side dependencies
+   ```sh
+   cd server
+   npm install
+   npm start
    ```
-
-<p align="right">(<a href="#top">back to top</a>)</p>
-
-
-
-<!-- USAGE EXAMPLES -->
-## Usage
-
-Use this space to show useful examples of how a project can be used. Additional screenshots, code examples and demos work well in this space. You may also link to more resources.
-
-_For more examples, please refer to the [Documentation](https://example.com)_
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
@@ -155,13 +133,6 @@ _For more examples, please refer to the [Documentation](https://example.com)_
 - [ ] Provide ability to leave the current room and/or reset your name
 - [ ] Improve accessibility
 - [ ] Consider using a Context provider for the socket instance
-
-<p align="right">(<a href="#top">back to top</a>)</p>
-
-<!-- LICENSE -->
-## License
-
-Distributed under the MIT License. See `LICENSE.txt` for more information.
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
@@ -177,10 +148,11 @@ Project Link: [https://github.com/btwalpole/react-node-buzzer](https://github.co
 <!-- ACKNOWLEDGMENTS -->
 ## Acknowledgments
 
-Some awesome resources I've used:
+Some awesome resources that have helped me on this project:
 
 * [Josh W Comeau - Building a Magical 3D Button](https://www.joshwcomeau.com/animation/3d-button/)
-* [https://liesgame.com/](https://liesgame.com/)
+* [Lies Game](https://liesgame.com/)
+* [README Template](https://github.com/othneildrew/Best-README-Template)
 * [Img Shields](https://shields.io)
 
 <p align="right">(<a href="#top">back to top</a>)</p>
