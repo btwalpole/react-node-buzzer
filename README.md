@@ -62,7 +62,7 @@
 
 In 2021 I decided I wanted to host a quiz for my friends. A little tired of playing the same games every time we all got together, I thought it would be fun to switch it up (mostly I think I just wanted the opportunity to channel the cheery disdain of Jeremy Paxman).
 
-While hosting a [University Challenge](https://en.wikipedia.org/wiki/University_Challenge) style quiz for my friends, I bought one little reception bell for each team. I found it was a lot trickier than expected to tell who buzzed in first, leading to a lot of aggrieved competitors!
+While hosting a [University Challenge](https://en.wikipedia.org/wiki/University_Challenge) style quiz for my friends, I bought one little reception bell 🛎️ for each team. I found it was a lot trickier than expected to tell who buzzed in first, leading to a lot of aggrieved competitors!
 
 To provide an impartial (and more accurate!) judge, I made a multiplayer buzzer system using:
 
