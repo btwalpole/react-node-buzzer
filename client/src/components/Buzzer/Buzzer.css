@@ -26,17 +26,32 @@
     font-family: 'Inconsolata', monospace;
 }
 
+.display {
+    display: flex;
+    border-radius: 3px;
+    justify-content: center;
+    margin-top: 40px;
+    display: flex;
+    width: 250px;
+    border: 1px solid #ddd;
+    box-shadow: 1px 3px 5px rgba(0,0,0,0.05);
+    border-radius: 2px;
+    overflow-y: auto;
+}
+
 .winnerText {
-    font-size: 1em;
+    font-size: 2em;
     display: flex;
     flex-direction: row;
     justify-content: space-evenly;
     width: 80%;
-    max-width: 400px;
+    color: #555;
+    height: 100%;
 }
 
-.gameScreen .display {
-    border-radius: 3px;
+.nameText {
+    color: #575ed8;
+    margin: 0 .3em;
 }
 
 .playersContainer {
@@ -64,46 +79,6 @@
     margin: .1em;
     width: 50%;
     text-align: center;
-}
-
-.display{
-    margin-top: 40px;
-    display: flex;
-    flex-direction: column;
-    width: 80vw;
-    border: 1px solid #ddd;
-    box-shadow: 1px 3px 5px rgba(0,0,0,0.05);
-    border-radius: 2px;
-    overflow-y: auto;
-}
-
-.chat-window{
-    overflow: auto;
-    background: #f9f9f9;
-}
-
-.output {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 3em;
-    /*height: 200px;*/
-}
-
-.output p{
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    /*padding: 14px 0px;
-    margin: 0 20px;*/
-    color: #555;
-    height: 100%;
-
-}
-
-.output .nameText {
-    color: #575ed8;
-    margin: 0 .3em;
 }
 
 .buzzBack {

@@ -87,10 +87,10 @@
     color: red;
 }
 
-input:invalid {
+input:invalid:focus {
     border: 2px solid red;
 }
 
-input:valid {
+input:valid:focus {
     border: 2px solid black;
 }

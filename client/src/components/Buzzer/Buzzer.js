@@ -65,7 +65,7 @@ function Buzzer({ name, room, isAdmin }) {
   //if buzzer is disabled, then someone just buzzed, so we display the below
   let winnerText = (
     <div className="winnerText">
-      <p id="nameText">{winner} </p> <p> buzzed first!!</p>
+      <p className="nameText">{winner} </p> <p> buzzed first!!</p>
     </div>
   );
 
@@ -103,14 +103,14 @@ function Buzzer({ name, room, isAdmin }) {
       </div>
 
       <div className="display">
-        <div className="output">{buzzerDisabled ? winnerText : null}</div>
+        {buzzerDisabled ? winnerText : null}
       </div>
       <button
         className={buzzBackClassName}
         onClick={handleBuzz}
         disabled={buzzerDisabled}
       >
-        <span className={buzzFrontClassName}>B</span>
+        <span className={buzzFrontClassName}>BUZZ  ME</span>
       </button>
       <div className="playersContainer">
         <h2>Players:</h2>
