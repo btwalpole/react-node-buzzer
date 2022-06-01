@@ -37,6 +37,7 @@ function Home({name, room, handleRoomChange, handleNewGame, handleJoinGame}) {
       <a
         className="logoAttribution"
         href="https://www.freepik.com/vectors/isometric-illustration"
+        alt="buzzer logo"
       >
         <img className="logo" src="quizLogo.jpg" />
       </a>
