@@ -75,6 +75,14 @@ This is not a revolutionary idea! But having made some simple React applications
 <!-- USAGE EXAMPLES -->
 ## How It Works
 
+### Key Features
+
+* Buzzer state in sync for all users in a given room
+* Session persistence on page reload
+* Responsive, mobile first design
+
+### User Journey
+
 A user should start with a prompt to enter their name. Once submitted, they are routed to a screen providing the option to either host their own game or join an existing one. This is all rendered with React. 
 
 On trying to create or join a game, an attempt is made to connect to the Socket.io server which acts as a source of truth for the state of all users and the games they're in. If successful, you should be sent to the buzzer screen. On buzzing, all users in the same game will be alerted to who buzzed first and the buzzer will be disabled until the game admin (the user who created the game) re-enables it.
