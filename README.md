@@ -7,12 +7,7 @@
   <a href="">
     <img src="client/public/quizLogo.jpg" alt="Logo" width="200" height="200">
   </a>
-
-  <h3 align="center">Multiplayer Quiz Buzzer</h3>
-
-  <p align="center">
-    A multiplayer buzzer 
-  </p>
+  <h3 align="center">A Multiplayer Quiz Buzzer</h3>
 </div>
 
 <!-- TABLE OF CONTENTS -->
@@ -42,11 +37,8 @@
 </details>
 
 
-
 <!-- ABOUT THE PROJECT -->
 ## About The Project
-
-[![Product Name Screen Shot][product-screenshot]](https://example.com)
 
 In 2021 I decided I wanted to host a quiz for my friends. A little tired of playing the same games every time we all got together, I thought it would be fun to switch it up (mostly I think I just wanted the opportunity to channel the cheery disdain of Jeremy Paxman).
 
