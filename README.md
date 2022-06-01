@@ -135,7 +135,7 @@ To run this locally, clone the repo, install the dependencies and start up the r
 <!-- CONTACT -->
 ## Contact
 
-Ben Walpole - btm.walpole@gmail.com
+Email - btm.walpole@gmail.com
 
 [LinkedIn](www.linkedin.com/in/ben-walpole-64a63310a)
 
