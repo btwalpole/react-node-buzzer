@@ -143,7 +143,6 @@ Some awesome resources that have helped me on this project:
 * [Josh W Comeau - Building a Magical 3D Button](https://www.joshwcomeau.com/animation/3d-button/)
 * [Lies Game](https://liesgame.com/)
 * [README Template](https://github.com/othneildrew/Best-README-Template)
-* [Img Shields](https://shields.io)
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
