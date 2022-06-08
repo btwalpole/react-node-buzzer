@@ -75,6 +75,36 @@ When successfully creating or joining a game, a unique session ID will be saved 
 
 ### Persisting Sessions
 
+Main learning points:
+
+* How to save and retrieve data in local storage.
+* The value of more extensive planning, and of writing things down!
+* The value of testing!
+
+When first using this app with my friends, I hadn't considered what happens between buzzes! I was using the buzzer for the 'starter for 10' type questions, so often there would be at least several minutes between each time the app is needed. In this time people might navigate away from it, either in the browser or to another app, or put their phones away entirely. It pretty quickly became clear that people had disconnected from the room and needed to rejoin, and when they did the buzzer was not in the same state as everyone elses! In a rush a to just get an MVP up and running I hadn't done any testing!
+
+To solve these issues I realised I needed to persist the user's session. It seems you can choose between local storage, session storage or cookies. Given local storage is persisted across all tabs I decided local storage made more sense than session storage, since I don't really see a use case where a user wants to be in more than one room at once.
+
+I considered using cookies but local storage seemed simpler to implement. The (Socket.io docs)[ https://socket.io/get-started/] have some great resources for this. Their example of using localStorage uses Vue rather than React but the same principles apply.
+
+I quickly realised there was a lot to consider when implementing this:
+
+* Does the user already have a session ID saved in localStorage? 
+* Does the server have any reference for that ID?
+* Is there even a room associated with that ID?
+* When is the best time to actually initiate the connection to the server?
+
+Clearly there are a lot of different scenarios to consider and I found it extremely useful to write this down - with actual pen and paper! This helped me to spot some gaps in the logic I was missing and some situations I hadn't covered.
+
+In thinking through this I realised how much simpler it would be to have just one enter username screen, so the username is captured before we connect. Previously I had the two places where a username might be entered:
+
+* Click Create Game -> Enter Name -> Join created Game, 
+* Click Join Game -> Enter Name -> Join game. 
+
+Handling both these scenarios was significantly more omplicated on server and frontend.
+
+Something I also had not considered was handling the disconnect events. For example, when a user refreshes and I check whether a user with their name is already in the room, I would find a duplicate entry of course - it was their previous session! Initially I added a parameter reJoin: false for example to say to let them replace the previous user if it was indeed them but I realised I wouldn't have to worry about that if I simply updated the state of the room upon disconnection! It feels obvious now but I didn't think about this until I started writing things down.
+
 ### Handling page navigation
 
 ### Managing communication and state across client and server
