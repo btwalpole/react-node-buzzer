@@ -1,11 +1,11 @@
 import React, { useState, useEffect} from "react";
 import socket from "./socket";
-import "./App.css";
 import EnterName from "./components/EnterName/EnterName";
 import Home from "./components/Home/Home"
 import Buzzer from "./components/Buzzer/Buzzer";
+import "./App.css";
 
-const App = () => {
+function App() {
   const [joinedGame, setJoinedGame] = useState(false);
   const [nameSubmitted, setNameSubmitted] = useState(false);
   const [name, setName] = useState('');
@@ -53,6 +53,12 @@ const App = () => {
     //on page load, check localstorage for session id
     //if none, then we connect later on when joining / creating a game
     //need to make sure this is actually only running once
+
+    //in response from th server, we either get
+    //A) oldSession event -> need to emit a joinGame event to server and go to Buzzer if successful
+    //B) no details found for sessionID -> clearLocalStorage event -> clearLocalStorage and disconnect
+    //C) newSession event -> now connected with new session, set ID in localStorage and go to Home screen
+
     const sessionID = localStorage.getItem("sessionID");
     if (sessionID) {
       console.log("found a session id: ", sessionID);
@@ -70,10 +76,6 @@ const App = () => {
       console.log("got new session event and saved sessionID to localStorage and on socket.auth");
     });
 
-    //in response, we either get
-    //A) oldSession event -> need to emit a joinGame event to server and go to Buzzer if successful
-    //B) no details found for sessionID -> clearLocalStorage event -> clearLocalStorage and disconnect
-    //C) newSession event -> now connected with new session, set ID in localStorage and go to Home screen
     
     socket.on("oldSession", ({ userID, roomName, oldUserName }) => {
       console.log("got old session event");

@@ -1,8 +1,6 @@
 import "./EnterName.css";
 
 function EnterName({name, handleNameChange, handleSubmitName}) {
-  //let [name, setName] = useState("");
-  //let navigate = useNavigate();
 
   function handleSubmit(event) {
     event.preventDefault();
@@ -22,7 +20,7 @@ function EnterName({name, handleNameChange, handleSubmitName}) {
           type="text"
           name="userName"
           required
-          maxlength="15"
+          maxLength="15"
           pattern="^[a-zA-Z]\p{L}+$"
           value={name}
           onChange={(event) => handleChange(event)}

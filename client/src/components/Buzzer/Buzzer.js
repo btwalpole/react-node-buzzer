@@ -64,9 +64,10 @@ function Buzzer({ name, room, isAdmin }) {
 
   //if buzzer is disabled, then someone just buzzed, so we display the below
   let winnerText = (
-    <div className="winnerText">
-      <p className="nameText">{winner} </p> <p> buzzed first!!</p>
-    </div>
+    winner ? <div className="winnerText">
+               <p className="nameText">{winner} </p> <p> buzzed first!!</p>
+             </div>
+           : null
   );
 
   let buzzBackClassName = "buzzBack";
