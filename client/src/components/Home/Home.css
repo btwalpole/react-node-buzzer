@@ -67,6 +67,7 @@
 .joinGameForm input {
     display: flex;
     max-width: 250px;
+    font-family: 'Inconsolata', monospace;
 }
 
 .homeScreen button {

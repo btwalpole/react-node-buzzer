@@ -5,7 +5,6 @@
     flex-direction: column;
     justify-content: space-around;
     width: 100%;
-    height: 100vh;
 }
 
 .reset {
@@ -160,7 +159,6 @@
 video {
     object-fit: cover;
     width: 100vw;
-    height: 100vh;
     position: fixed;
     top: 0;
     left: 0;
