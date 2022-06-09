@@ -4,7 +4,7 @@ import { io } from "socket.io-client";
 //const URL = "http://localhost:5000";
 
 //URL on gitpod
-const URL = "https://5000-btwalpole-reactnodebuzz-sm1gmvmjrdp.ws-eu46.gitpod.io/"
+const URL = "https://5000-btwalpole-reactnodebuzz-sm1gmvmjrdp.ws-eu47.gitpod.io/"
 const socket = io(URL, { autoConnect: false, auth: {} });
 
 socket.onAny((event, ...args) => {
