@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import socket from "../../socket";
+import Button from "../Button/Button";
 import "./Buzzer.css";
 
 function Buzzer({ name, room, isAdmin }) {
@@ -72,27 +73,27 @@ function Buzzer({ name, room, isAdmin }) {
 
   let buzzBackClassName = "buzzBack";
   let buzzFrontClassName = "buzzFront";
-  let resetClassName = "reset";
+  let resetClassName = "";
   if (buzzerDisabled) {
     buzzBackClassName += " disabled-buzzBack";
     buzzFrontClassName += " disabled-buzzFront";
-    resetClassName += " enabled-reset";
+    //resetClassName += " enabled-reset";
   } else {
     buzzBackClassName += " enabled-buzzBack";
     buzzFrontClassName += " enabled-buzzFront";
-    resetClassName += " disabled-reset";
+    resetClassName = "disabled-reset";
   }
 
   return (
     <div className="gameScreen">
       {isAdmin ? (
-        <button
+        <Button
           className={resetClassName}
           disabled={!buzzerDisabled}
           onClick={handleReset}
         >
           Reset
-        </button>
+        </Button>
       ) : null}
       <h1>
         Your game code: <span className="gameCodeDisplay">{room}</span>

@@ -1,3 +1,4 @@
+import Button from "../Button/Button"
 import "./EnterName.css";
 
 function EnterName({name, handleNameChange, handleSubmitName}) {
@@ -25,9 +26,9 @@ function EnterName({name, handleNameChange, handleSubmitName}) {
           value={name}
           onChange={(event) => handleChange(event)}
         />
-        <button type="submit" className="submitNameBtn">
+        <Button type="submit" className="submitNameBtn">
           Submit
-        </button>
+        </Button>
       </form>
     </div>
   );

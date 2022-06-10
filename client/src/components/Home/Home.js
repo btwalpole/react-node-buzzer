@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import socket from "../../socket";
+import Button from "../Button/Button"
 import "./Home.css";
 
 function Home({name, room, handleRoomChange, handleNewGame, handleJoinGame}) {
@@ -46,9 +47,9 @@ function Home({name, room, handleRoomChange, handleNewGame, handleJoinGame}) {
           Hi <span className="homeUserName">{name}</span>!
         </h2>
         <form onSubmit={(event) => handleNewGameSubmit(event)}>
-          <button type="submit" className="newGameButton">
+          <Button type="submit" className="homeButton">
             Create New Game
-          </button>
+          </Button>
         </form>
         <h2>OR</h2>
         <form
@@ -65,9 +66,9 @@ function Home({name, room, handleRoomChange, handleNewGame, handleJoinGame}) {
             onChange={(event) => handleChange(event)}
           />
           {!roomValid ? errorMsg : null}
-          <button type="submit" className="joinGameBtn">
+          <Button type="submit" className="homeButton">
             Join Game
-          </button>
+          </Button>
         </form>
       </div>
     </div>

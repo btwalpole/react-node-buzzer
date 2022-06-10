@@ -34,6 +34,7 @@
 }
 
 .submitNameBtn {
+    /*
     display: flex;
     width: auto;
     font-size: 1.5em;
@@ -45,4 +46,17 @@
     padding: 10px 20px;
     border: none;
     border-radius: 5px;
+    cursor: pointer;
+    */
+    /*
+    color: hotpink;
+    */
 }
+
+/*
+
+.submitNameBtn:hover {
+    background-color: hsl(210deg,15%,15%);
+}
+
+*/

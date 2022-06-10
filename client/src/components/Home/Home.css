@@ -48,10 +48,6 @@
     color: #8844bb;
 }
 
-.homeScreen button {
-    font-size: 2em;
-}
-
 .joinGameForm {
     display: flex;
     align-items: center;
@@ -70,18 +66,8 @@
     font-family: 'Inconsolata', monospace;
 }
 
-.homeScreen button {
-    margin: .5em .5em;
-    display: flex;
-    width: auto;
-    font-size: 1.5em;
-    font-weight: 600;
-    justify-content: center;
-    background-color: hsl(210deg,15%,20%);
-    color: hsl(0deg,0%,100%);
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
+.homeButton {
+    font-size: 2em;
 }
 
 .roomInvalid {

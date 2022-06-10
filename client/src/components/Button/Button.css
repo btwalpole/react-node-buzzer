@@ -1,0 +1,18 @@
+.button {
+    display: flex;
+    width: auto;
+    font-size: 1.5em;
+    font-weight: 600;
+    margin: 1em;
+    justify-content: center;
+    background-color: hsl(210deg,15%,20%);
+    color: hsl(0deg,0%,100%);
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.button:hover {
+    background-color: hsl(210deg,15%,10%);
+}
