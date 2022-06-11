@@ -17,7 +17,7 @@ const io = new Server(httpServer, {
     origin: [
       "https://3000-btwalpole-reactnodebuzz-sm1gmvmjrdp.ws-eu47.gitpod.io",
       "http://localhost:3000",
-      "https://brilliant-pika-0b19a2.netlify.app/",
+      "https://brilliant-pika-0b19a2.netlify.app",
     ],
   },
 });
