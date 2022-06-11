@@ -1,30 +1,30 @@
-import React, { useState, useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import socket from "./socket";
 import EnterName from "./components/EnterName/EnterName";
-import Home from "./components/Home/Home"
+import Home from "./components/Home/Home";
 import Buzzer from "./components/Buzzer/Buzzer";
 import "./App.css";
 
 function App() {
   const [joinedGame, setJoinedGame] = useState(false);
   const [nameSubmitted, setNameSubmitted] = useState(false);
-  const [name, setName] = useState('');
-  const [room, setRoom] = useState('');
+  const [name, setName] = useState("");
+  const [room, setRoom] = useState("");
   const [admin, setAdmin] = useState(false);
 
   function handleNameChange(newName) {
-    setName(newName)
+    setName(newName);
   }
 
   function handleSubmitName() {
     console.log("submitting name: ", name);
     socket.auth.username = name;
     console.log("socket.auth: ", socket.auth);
-    setNameSubmitted(true)
+    setNameSubmitted(true);
   }
 
   function handleRoomChange(newRoom) {
-    setRoom(newRoom)
+    setRoom(newRoom);
   }
 
   function handleNewGame() {
@@ -32,17 +32,17 @@ function App() {
     console.log("now creating game as ", socket.auth.username);
     console.log("now connecting to socket.io");
     socket.connect();
-    //if nothing in localStorage, we should now get a newSession event. Does it matter if we emit 'newGame' before this has been handled? No, since all we do is 
+    //if nothing in localStorage, we should now get a newSession event. Does it matter if we emit 'newGame' before this has been handled? No, since all we do is
     //save the sessionID in localStorage and add it to the socket.auth object (which will be needed for future connections but not the current one)
     console.log("now emitting newGame event");
     socket.emit("newGame");
   }
 
   function handleJoinGame() {
-    console.log(name + ' now joining ' + room);
+    console.log(name + " now joining " + room);
     console.log("now connecting to socket.io");
     socket.connect();
-    //if nothing in localStorage, we should now get a newSession event. Does it matter if we emit 'joinGame' before this has been handled? No, since all we do is 
+    //if nothing in localStorage, we should now get a newSession event. Does it matter if we emit 'joinGame' before this has been handled? No, since all we do is
     //save the sessionID in localStorage and add it to the socket.auth object (which will be needed for future connections but not the current one)
     console.log("now emitting joinGame event");
     socket.emit("joinGame", { roomToJoin: room });
@@ -73,33 +73,34 @@ function App() {
       socket.auth = { sessionID };
       localStorage.setItem("sessionID", sessionID);
       socket.userID = userID; //remove this  if not used?
-      console.log("got new session event and saved sessionID to localStorage and on socket.auth");
+      console.log(
+        "got new session event and saved sessionID to localStorage and on socket.auth"
+      );
     });
 
-    
     socket.on("oldSession", ({ userID, roomName, oldUserName }) => {
       console.log("got old session event");
-      setName(oldUserName)
-      setRoom(roomName)
-      setNameSubmitted(true)
-      if(roomName) {
+      setName(oldUserName);
+      setRoom(roomName);
+      setNameSubmitted(true);
+      if (roomName) {
         socket.emit("joinGame", { roomToJoin: roomName });
       } else {
-        console.log('old session event but no associated room')
+        console.log("old session event but no associated room");
       }
     });
 
     socket.on("enterGameScreen", ({ roomToJoin, username, roomAdmin }) => {
-      console.log('roomAdmin: ', roomAdmin)
-      console.log('username: ', username)
-      if(roomAdmin === username) {
-        console.log('user is admin')
+      console.log("roomAdmin: ", roomAdmin);
+      console.log("username: ", username);
+      if (roomAdmin === username) {
+        console.log("user is admin");
         setAdmin(true);
       }
-      setRoom(roomToJoin)
+      setRoom(roomToJoin);
       console.log(name + " is entering room " + roomToJoin);
-      console.log('join successful');
-      setJoinedGame(true) //this should switch us to the Buzzer component
+      console.log("join successful");
+      setJoinedGame(true); //this should switch us to the Buzzer component
     });
 
     socket.on("clearLocalStorage", () => {
@@ -114,19 +115,28 @@ function App() {
       socket.removeAllListeners();
       //also delete / turn off the socket?
     };
-  }, []);
+  }, [name]);
 
-  
   return (
-    <div className='container'>
-      { 
-        joinedGame === true ? <Buzzer name={name} room={room} isAdmin={admin}/>
-        : nameSubmitted === true ? <Home name={name} room={room} handleRoomChange={handleRoomChange} handleNewGame={handleNewGame} handleJoinGame={handleJoinGame}/>
-        : <EnterName handleNameChange={handleNameChange} handleSubmitName={handleSubmitName} /> 
-      }
+    <div className="container">
+      {joinedGame === true ? (
+        <Buzzer name={name} room={room} isAdmin={admin} />
+      ) : nameSubmitted === true ? (
+        <Home
+          name={name}
+          room={room}
+          handleRoomChange={handleRoomChange}
+          handleNewGame={handleNewGame}
+          handleJoinGame={handleJoinGame}
+        />
+      ) : (
+        <EnterName
+          handleNameChange={handleNameChange}
+          handleSubmitName={handleSubmitName}
+        />
+      )}
     </div>
-    
   );
-};
+}
 
 export default App;

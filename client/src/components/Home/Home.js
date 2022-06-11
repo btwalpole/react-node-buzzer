@@ -1,11 +1,11 @@
 import { useState, useEffect } from "react";
 import socket from "../../socket";
-import Button from "../Button/Button"
+import Button from "../Button/Button";
 import "./Home.css";
 
-function Home({name, room, handleRoomChange, handleNewGame, handleJoinGame}) {
-  const [roomValid, setRoomValid] = useState(true)
-  
+function Home({ name, room, handleRoomChange, handleNewGame, handleJoinGame }) {
+  const [roomValid, setRoomValid] = useState(true);
+
   function handleNewGameSubmit(event) {
     event.preventDefault();
     handleNewGame();
@@ -16,21 +16,19 @@ function Home({name, room, handleRoomChange, handleNewGame, handleJoinGame}) {
     console.log("now joining game as ", socket.auth.username);
     handleJoinGame();
   }
-  
+
   function handleChange(event) {
-    handleRoomChange(event.target.value)
+    handleRoomChange(event.target.value);
   }
 
   useEffect(() => {
     socket.on("noSuchRoom", (roomName) => {
-      setRoomValid(false)
+      setRoomValid(false);
       console.log("entered room " + roomName + " does not exist");
     });
-  }, [])
+  }, []);
 
-  const errorMsg = (
-    <p className="roomInvalid">No such room exists!</p>
-  )
+  const errorMsg = <p className="roomInvalid">No such room exists!</p>;
 
   return (
     <div className="homeScreen">
@@ -40,7 +38,7 @@ function Home({name, room, handleRoomChange, handleNewGame, handleJoinGame}) {
         href="https://www.freepik.com/vectors/isometric-illustration"
         alt="buzzer logo"
       >
-        <img className="logo" src="quizLogo.jpg" />
+        <img className="logo" src="quizLogo.jpg" alt="quizLogo" />
       </a>
       <div className="homeForms">
         <h2 className="welcome">

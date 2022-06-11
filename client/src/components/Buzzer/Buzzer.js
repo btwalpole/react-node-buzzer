@@ -9,7 +9,7 @@ function Buzzer({ name, room, isAdmin }) {
   let [users, setUsers] = useState([]);
   let [buzzerDisabled, setBuzzerDisabled] = useState(false);
   let [winner, setWinner] = useState("");
-  let [emoji, setEmoji] = useState("");
+  //let [emoji, setEmoji] = useState("");
 
   function handleBuzz() {
     //first disable the buzzer for everyone
@@ -64,12 +64,11 @@ function Buzzer({ name, room, isAdmin }) {
   }, []);
 
   //if buzzer is disabled, then someone just buzzed, so we display the below
-  let winnerText = (
-    winner ? <div className="winnerText">
-               <p className="nameText">{winner} </p> <p> buzzed first!!</p>
-             </div>
-           : null
-  );
+  let winnerText = winner ? (
+    <div className="winnerText">
+      <p className="nameText">{winner} </p> <p> buzzed first!!</p>
+    </div>
+  ) : null;
 
   let buzzBackClassName = "buzzBack";
   let buzzFrontClassName = "buzzFront";
@@ -104,15 +103,13 @@ function Buzzer({ name, room, isAdmin }) {
         </h1>
       </div>
 
-      <div className="display">
-        {buzzerDisabled ? winnerText : null}
-      </div>
+      <div className="display">{buzzerDisabled ? winnerText : null}</div>
       <button
         className={buzzBackClassName}
         onClick={handleBuzz}
         disabled={buzzerDisabled}
       >
-        <span className={buzzFrontClassName}>BUZZ  ME</span>
+        <span className={buzzFrontClassName}>BUZZ ME</span>
       </button>
       <div className="playersContainer">
         <h2>Players:</h2>
