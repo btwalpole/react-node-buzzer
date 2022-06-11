@@ -55,7 +55,7 @@ function Buzzer({ name, room, isAdmin }) {
     socket.on("buzzed", function (data) {
       disableBuzzer();
       setWinner(data.nameBuzzed);
-      setEmoji(emojis[data.emojiNum]);
+      //setEmoji(emojis[data.emojiNum]);
     });
 
     socket.on("reset", () => {
