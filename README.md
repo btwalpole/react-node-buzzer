@@ -8,6 +8,7 @@
     <img src="client/public/quizLogo.jpg" alt="Logo" width="200" height="200">
   </a>
   <h3 align="center">A Multiplayer Quiz Buzzer</h3>
+  <h4 align="center">Deployed live at <a href="https://brilliant-pika-0b19a2.netlify.app/">https://brilliant-pika-0b19a2.netlify.app</a></h4>
 </div>
 
 <!-- TABLE OF CONTENTS -->
@@ -16,21 +17,23 @@
   <ol>
     <li>
       <a href="#about-the-project">About The Project</a>
+    </li>
+    <li>
+      <a href="#how-it-works">How It Works</a>
       <ul>
-        <li><a href="#built-with">Built With</a></li>
+        <li><a href="#key-features">Key Features</a></li>
+        <li><a href="#user-journey">User Journey</a></li>
       </ul>
     </li>
     <li>
-      <a href="#getting-started">Getting Started</a>
+      <a href="#reflections-and-lessons-learned">Reflections and Lessons Learned</a>
       <ul>
-        <li><a href="#prerequisites">Prerequisites</a></li>
-        <li><a href="#installation">Installation</a></li>
+        <li><a href="#session-persistence">Session Persistence</a></li>
+        <li><a href="#navigation">Handling Navigation</a></li>
       </ul>
     </li>
     <li><a href="#usage">Usage</a></li>
     <li><a href="#roadmap">Roadmap</a></li>
-    <li><a href="#contributing">Contributing</a></li>
-    <li><a href="#license">License</a></li>
     <li><a href="#contact">Contact</a></li>
     <li><a href="#acknowledgments">Acknowledgments</a></li>
   </ol>
@@ -52,7 +55,6 @@ To provide an impartial (and more accurate!) judge, I made a multiplayer buzzer 
 
 This is not a revolutionary idea! But I thought this would be a great project to teach myself Node JS and WebSockets. I started out writing the front end in plain JavaScript but ported later ported it to React.
 
-<!-- USAGE EXAMPLES -->
 ## How It Works
 
 ### Key Features
@@ -104,7 +106,7 @@ Handling this only once made the code significantly simpler and cleaner, and I t
 
 Something I also had not considered was handling the disconnect events. For example, when a user refreshes and I check whether a user with their name is already in the room, I would find a duplicate entry of course - it was their previous session! Initially I added a parameter reJoin: false for example to say to let them replace the previous user if it was indeed them but I realised I wouldn't have to worry about that if I simply updated the state of the room upon disconnection! It feels obvious now but I didn't think about this until I started writing things down.
 
-### Handling page navigation
+### Handling Navigation
 
 Initially I used React Router, and had a different URL for the initial page, the create/join a game page and the buzzer page. This worked great until I considered how I would need to implement the session persistence across all URLs.
 
