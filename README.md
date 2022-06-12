@@ -43,17 +43,17 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-In 2021 I decided I wanted to host a quiz for my friends. A little tired of playing the same games every time we all got together, I thought it would be fun to switch it up (mostly I think I just wanted the opportunity to channel my inner Jeremy Paxman).
+In 2021 I decided I wanted to host a [University Challenge](https://en.wikipedia.org/wiki/University_Challenge) style quiz for my friends. A little tired of playing the same games every time we all got together, I thought it would be fun to switch it up (mostly I think I just wanted the opportunity to channel my inner Jeremy Paxman).
 
-While hosting a [University Challenge](https://en.wikipedia.org/wiki/University_Challenge) style quiz for my friends, I bought one little reception bell 🛎️ for each team. I found it was a lot trickier than expected to tell who buzzed in first, leading to many aggrieved competitors!
+I bought one little reception bell 🛎️ for each team to buzz in but I found it was a lot trickier than expected to tell who buzzed first, leading to many aggrieved contestants!
 
-To provide an impartial (and more accurate!) judge, I made a multiplayer buzzer system using:
+To provide an impartial (and more accurate) judge, I made a multiplayer buzzer system using:
 
 * [React.js](https://reactjs.org/)
 * [Node JS](https://nodejs.org/en/)
 * [Socket.io](https://socket.io/)
 
-This is not a revolutionary idea! But I thought this would be a great project to teach myself Node JS and WebSockets. I started out writing the front end in plain JavaScript but ported later ported it to React.
+This is far from a revolutionary idea! But I thought this would be a great project to teach myself Node JS and WebSockets. I started out writing the front end in plain JavaScript but ported later ported it to React.
 
 ## How It Works
 
@@ -112,13 +112,12 @@ Initially I used React Router, and had a different URL for the initial page, the
 
 Here is the process for session persistence I had working in plain JS:
 
-On page load, check for sessionID in localStorage using a hook, if found, we need to call the server and straight away call the server and try to join the room.
-
-In response, we either get:
+On page load, check for sessionID in localStorage. If found, we need to call the server and straight away and try to join the room. In response from the server we can receive one of the two following events:
     
-* A) oldSession event -> need to emit a joinGame event to server and go to Buzzer if successful
-* B) no details found for sessionID -> clearLocalStorage event -> clearLocalStorage and disconnect
-* C) newSession event -> now connected with new session, set ID in localStorage and go to Home screen
+* A) 'oldSession' event: sessionID saved in browser andfound in server -> need to emit a joinGame event to server and go to Buzzer if successful.
+* B) 'newSession' event: sessionID not found in server -> tell browser to remove that sessionID from local storage and disconnect.
+
+If no sessionID is found in browser, we connect to the server as a new user, set an ID in localStorage and go to the Home screen.
 
 So how to have this work from multiple URLs? It seemed I would need to have event listeners duplicated across multiple React components. In the JS only version I was using modals so this didn't matter.
 
