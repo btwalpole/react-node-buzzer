@@ -123,19 +123,7 @@ So how to have this work from multiple URLs? It seemed I would need to have even
 
 Say we refresh on /buzzer. We need code on that route to run that checks localStorage and goes through all the subsequent logic to either join a game and stay here or to either go /home or to the EnterGame page. And this logic will have to be slightly different for /home and /EnterGame too, since we're at different stages in the process.
 
-I'm sure there is a way around this but I decided it would be easiest to conditionally load different components all from the same URL. 
-
-How do we conditionally load different components based on the above state?
-
-A) If we get a joinGameSuccess event from the server we could do setGameJoined(true) and conditionally load the Buzzer component?
-
-B & C) If we get a newSession event or a clearLocalStorage event, we can just stay on the enterNameScreen. On submit of username, we can do setNameSubmitted(true) ? and conditionally render based on that?
-
-If we're at first showing the enterName component, we need to lift that state up into this parent component so it can see the name. It also makes sense for the state of the users name to be owned  by the App and shared between tthe other components, rather than being set in EnterName but then passed around to other components from the server with socket.io.??
-
-
-### Managing communication and state across client and server
-
+I'm sure there is a way around this but I decided it would be easiest to conditionally load different components based on state, all from the same URL.
 
 <!-- GETTING STARTED -->
 ## Getting Started
@@ -170,7 +158,6 @@ To run this locally, clone the repo, install the dependencies and start up the r
    ```
 
 <p align="right">(<a href="#top">back to top</a>)</p>
-
 
 <!-- ROADMAP -->
 ## Roadmap
