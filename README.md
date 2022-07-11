@@ -4,9 +4,6 @@
 <!-- PROJECT LOGO -->
 <br />
 <div align="center">
-  <a href="">
-    <img src="client/public/quizLogo.jpg" alt="Logo" width="200" height="200">
-  </a>
   <h3 align="center">A Multiplayer Quiz Buzzer</h3>
   <h4 align="center">Deployed live at <a href="https://brilliant-pika-0b19a2.netlify.app/">https://brilliant-pika-0b19a2.netlify.app</a></h4>
 </div>
@@ -52,6 +49,16 @@ To provide an impartial (and more accurate) judge, I made a multiplayer buzzer s
 * [Socket.io](https://socket.io/)
 
 This is far from a revolutionary idea! But I thought this would be a great project to teach myself Node JS and WebSockets. I started out writing the front end in plain JavaScript but ported later ported it to React.
+
+Here's what the create / join game page looks like:
+
+<div align="center">
+  <a href="">
+    <img src="client/public/homePage.PNG" alt="Screenshot of app game creation/join page">
+  </a>
+</div>
+
+Credit for the logo goes to https://www.freepik.com/vectors/isometric-illustration
 
 ## How It Works
 
