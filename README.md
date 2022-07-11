@@ -28,19 +28,17 @@
     <li>
       <a href="#reflections-and-lessons-learned">Reflections and Lessons Learned</a>
       <ul>
-        <li><a href="#session-persistence">Session Persistence</a></li>
-        <li><a href="#navigation">Handling Navigation</a></li>
+        <li><a href="#persisting-sessions">Session Persistence</a></li>
+        <li><a href="#handling-navigation">Handling Navigation</a></li>
       </ul>
     </li>
-    <li><a href="#usage">Usage</a></li>
+    <li><a href="#getting-started">Getting Started</a></li>
     <li><a href="#roadmap">Roadmap</a></li>
     <li><a href="#contact">Contact</a></li>
     <li><a href="#acknowledgments">Acknowledgments</a></li>
   </ol>
 </details>
 
-
-<!-- ABOUT THE PROJECT -->
 ## About The Project
 
 In 2021 I decided I wanted to host a [University Challenge](https://en.wikipedia.org/wiki/University_Challenge) style quiz for my friends. A little tired of playing the same games every time we all got together, I thought it would be fun to switch it up (mostly I think I just wanted the opportunity to channel my inner Jeremy Paxman).
@@ -125,7 +123,8 @@ Say we refresh on /buzzer. We need code on that route to run that checks localSt
 
 I'm sure there is a way around this but I decided it would be easiest to conditionally load different components based on state, all from the same URL.
 
-<!-- GETTING STARTED -->
+<p align="right">(<a href="#top">back to top</a>)</p>
+
 ## Getting Started
 
 ### Prerequisites
