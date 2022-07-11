@@ -61,7 +61,7 @@ This is far from a revolutionary idea! But I thought this would be a great proje
 
 * Buzzer state in sync for all users in a given room
 * Session persistence on page reload
-* Mbile first design
+* Mobile first design
 
 ### User Journey
 
