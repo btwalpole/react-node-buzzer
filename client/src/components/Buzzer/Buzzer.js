@@ -3,8 +3,13 @@ import socket from "../../socket";
 import Button from "../Button/Button";
 import "./Buzzer.css";
 
-function Buzzer({ name, room, isAdmin }) {
-  console.log("isAdmin: ", isAdmin);
+import useSound from "use-sound";
+import buzzSfx from "../../sounds/ding.mp3";
+
+function Buzzer({ name, room, isAdmin, handleExit }) {
+  const [play] = useSound(buzzSfx);
+
+  // console.log("isAdmin: ", isAdmin);
   //when we first load the Buzzer we want to check if the user is admin, if so then we render the reset button
   let [users, setUsers] = useState([]);
   let [buzzerDisabled, setBuzzerDisabled] = useState(false);
@@ -12,8 +17,9 @@ function Buzzer({ name, room, isAdmin }) {
   //let [emoji, setEmoji] = useState("");
 
   function handleBuzz() {
+    play();
     //first disable the buzzer for everyone
-    console.log(name + " buzzed!");
+    // console.log(name + " buzzed!");
     const random = Math.floor(Math.random() * emojis.length);
 
     socket.emit("buzz", {
@@ -28,26 +34,26 @@ function Buzzer({ name, room, isAdmin }) {
   }
 
   function disableBuzzer() {
-    console.log("disabling buzzer");
+    // console.log("disabling buzzer");
     setBuzzerDisabled(true);
   }
 
   useEffect(() => {
     socket.on("updatePlayerList", ({ users }) => {
-      console.log("user array: ", users);
+      // console.log("user array: ", users);
       setUsers(users);
     });
     socket.emit("getPlayerList");
 
     //need to also get correct buzzer state on first load
     socket.on("buzzerState", function ({ buzzerEnabled }) {
-      console.log("got buzzerState event: ", buzzerEnabled);
+      // console.log("got buzzerState event: ", buzzerEnabled);
       if (buzzerEnabled) {
         setBuzzerDisabled(false);
-        console.log("enabling buzzer");
+        // console.log("enabling buzzer");
       } else {
         disableBuzzer();
-        console.log("disabling buzzer");
+        // console.log("disabling buzzer");
       }
     });
     socket.emit("getBuzzerState");
@@ -85,15 +91,20 @@ function Buzzer({ name, room, isAdmin }) {
 
   return (
     <div className="gameScreen">
-      {isAdmin ? (
-        <Button
-          className={resetClassName}
-          disabled={!buzzerDisabled}
-          onClick={handleReset}
-        >
-          Reset
+      <div className="buttons">
+        {isAdmin ? (
+          <Button
+            className={resetClassName}
+            disabled={!buzzerDisabled}
+            onClick={handleReset}
+          >
+            Reset
+          </Button>
+        ) : null}
+        <Button className="exit-btn" onClick={handleExit}>
+          Exit
         </Button>
-      ) : null}
+      </div>
       <h1>
         Your game code: <span className="gameCodeDisplay">{room}</span>
       </h1>

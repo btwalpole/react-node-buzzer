@@ -17,9 +17,9 @@ function App() {
   }
 
   function handleSubmitName() {
-    console.log("submitting name: ", name);
+    // console.log("submitting name: ", name);
     socket.auth.username = name;
-    console.log("socket.auth: ", socket.auth);
+    // console.log("socket.auth: ", socket.auth);
     setNameSubmitted(true);
   }
 
@@ -28,9 +28,9 @@ function App() {
   }
 
   function handleNewGame() {
-    console.log("socket.auth: ", socket.auth);
-    console.log("now creating game as ", socket.auth.username);
-    console.log("now connecting to socket.io");
+    // console.log("socket.auth: ", socket.auth);
+    // console.log("now creating game as ", socket.auth.username);
+    // console.log("now connecting to socket.io");
     socket.connect();
     //if nothing in localStorage, we should now get a newSession event. Does it matter if we emit 'newGame' before this has been handled? No, since all we do is
     //save the sessionID in localStorage and add it to the socket.auth object (which will be needed for future connections but not the current one)
@@ -39,13 +39,21 @@ function App() {
   }
 
   function handleJoinGame() {
-    console.log(name + " now joining " + room);
-    console.log("now connecting to socket.io");
+    // console.log(name + " now joining " + room);
+    // console.log("now connecting to socket.io");
     socket.connect();
     //if nothing in localStorage, we should now get a newSession event. Does it matter if we emit 'joinGame' before this has been handled? No, since all we do is
     //save the sessionID in localStorage and add it to the socket.auth object (which will be needed for future connections but not the current one)
     console.log("now emitting joinGame event");
     socket.emit("joinGame", { roomToJoin: room });
+  }
+
+  function handleExit() {
+    socket.emit("exitRoom", { room });
+    socket.disconnect();
+    setJoinedGame(false);
+    setAdmin(false);
+    setRoom("");
   }
 
   //check localStorage for sessionID
@@ -61,11 +69,11 @@ function App() {
 
     const sessionID = localStorage.getItem("sessionID");
     if (sessionID) {
-      console.log("found a session id: ", sessionID);
+      // console.log("found a session id: ", sessionID);
       socket.auth.sessionID = sessionID;
       socket.connect();
     } else {
-      console.log("no previous session id found");
+      // console.log("no previous session id found");
     }
 
     socket.on("newSession", ({ sessionID, userID }) => {
@@ -73,9 +81,9 @@ function App() {
       socket.auth = { sessionID };
       localStorage.setItem("sessionID", sessionID);
       socket.userID = userID; //remove this  if not used?
-      console.log(
-        "got new session event and saved sessionID to localStorage and on socket.auth"
-      );
+      // console.log(
+      //   "got new session event and saved sessionID to localStorage and on socket.auth"
+      // );
     });
 
     socket.on("oldSession", ({ userID, roomName, oldUserName }) => {
@@ -86,28 +94,51 @@ function App() {
       if (roomName) {
         socket.emit("joinGame", { roomToJoin: roomName });
       } else {
-        console.log("old session event but no associated room");
+        // console.log("old session event but no associated room");
       }
     });
 
     socket.on("enterGameScreen", ({ roomToJoin, username, roomAdmin }) => {
-      console.log("roomAdmin: ", roomAdmin);
-      console.log("username: ", username);
+      // console.log("roomAdmin: ", roomAdmin);
+      // console.log("username: ", username);
       if (roomAdmin === username) {
         console.log("user is admin");
         setAdmin(true);
       }
       setRoom(roomToJoin);
-      console.log(name + " is entering room " + roomToJoin);
-      console.log("join successful");
+      // console.log(name + " is entering room " + roomToJoin);
+      // console.log("join successful");
       setJoinedGame(true); //this should switch us to the Buzzer component
     });
 
     socket.on("clearLocalStorage", () => {
-      console.log("clearing localStorage");
+      // console.log("clearing localStorage");
       localStorage.removeItem("sessionID");
       socket.auth = {};
       socket.disconnect();
+    });
+
+    socket.on("updateAdmin", ({ roomToUpdate, newAdmin }) => {
+      // console.log("updating admin - room", room);
+      // console.log("updating admin - roomToUpdate", roomToUpdate);
+      // console.log("updating admin - newAdminName", newAdmin);
+      // console.log("updating admin - name", name);
+      if (roomToUpdate === room && newAdmin === name) {
+        setAdmin(true);
+      }
+    });
+
+    socket.on("roomDeleted", (roomDeleted) => {
+      console.log("room deleted", roomDeleted);
+      if (roomDeleted === room) {
+        setJoinedGame(false);
+        setAdmin(false);
+        setRoom("");
+      }
+      // remove me from this room UI side, set roomJOined false, set room ''?
+      // localStorage.removeItem("sessionID");
+      // socket.auth = {};
+      // socket.disconnect();
     });
 
     return () => {
@@ -115,12 +146,17 @@ function App() {
       socket.removeAllListeners();
       //also delete / turn off the socket?
     };
-  }, [name]);
+  }, [name, room, setName, setRoom, admin, setAdmin, setJoinedGame]);
 
   return (
     <div className="container">
       {joinedGame === true ? (
-        <Buzzer name={name} room={room} isAdmin={admin} />
+        <Buzzer
+          name={name}
+          room={room}
+          isAdmin={admin}
+          handleExit={handleExit}
+        />
       ) : nameSubmitted === true ? (
         <Home
           name={name}

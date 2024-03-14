@@ -27,11 +27,29 @@ app.use(cors());
 
 httpServer.listen(PORT, () => console.log(`Server started on port ${PORT}`));
 
-const state = {}; //store the state of the buzzer of each room, and the users in it???? - maybe we can just get this with a function
-const sessions = {}; //allows us to look up room name of a given sessionID
+const state = {};
+/**
+ *  type state = {
+ *    roomName: {
+        admin: string;
+        users: string[];
+        buzzerEnabled: boolean;
+      }
+    }
+ */
+
+const sessions = {};
+/*
+ * type sessions = {
+ *    sessionID: {
+ *      userID: string;
+        username: string;
+ *    } 
+ * }
+ * */
+//allows us to look up room name of a given sessionID
 
 io.on("connection", (socket) => {
-  console.log("New socket connected");
   let sessionID = socket.handshake.auth.sessionID;
 
   //on connection we will have either:
@@ -53,7 +71,6 @@ io.on("connection", (socket) => {
   if (sessionID) {
     console.log("sessionID found in localStorage: ", sessionID);
     // check if we have a reference of this sessionID
-    console.log("sessions[sessionID]: ", sessions[sessionID]);
     console.log("sessions: ", sessions);
     if (sessions[sessionID]) {
       socket.emit("oldSession", {
@@ -89,7 +106,6 @@ io.on("connection", (socket) => {
   }
 
   socket.on("newGame", function () {
-    console.log("starting new game");
     const roomName = makeId(5);
     //set room on the session
     sessions[sessionID].room = roomName;
@@ -107,14 +123,14 @@ io.on("connection", (socket) => {
       username: sessions[sessionID].username,
       roomAdmin: state[roomName].admin,
     });
-    console.log("new game created. Users: ", state[roomName].users);
+    console.log("sessions after newGame", sessions);
+    console.log("state after newGame", state);
   });
 
   socket.on("joinGame", function ({ roomToJoin }) {
     console.log("sessionID " + sessionID + " now joining " + roomToJoin);
     console.log("state on joining: ", state);
     if (state[roomToJoin]) {
-      console.log("state.roomToJoin: ", state[roomToJoin]);
       //first need to check if a player already exists with this name in this room
       if (state[roomToJoin].users.includes(sessions[sessionID].username)) {
         socket.emit("userNameTaken", sessions[sessionID].username);
@@ -126,9 +142,7 @@ io.on("connection", (socket) => {
         console.log(
           "adding " + sessions[sessionID].username + " to room " + roomToJoin
         );
-        console.log("before addition users are: " + state[roomToJoin].users);
         state[roomToJoin].users.push(sessions[sessionID].username);
-        console.log("after addition users are: " + state[roomToJoin].users);
         socket.join(roomToJoin);
         socket.emit("enterGameScreen", {
           roomToJoin,
@@ -143,6 +157,8 @@ io.on("connection", (socket) => {
     } else {
       socket.emit("noSuchRoom", roomToJoin);
     }
+    console.log("sessions after joinGame", sessions);
+    console.log("state after joinGame", state);
   });
 
   socket.on("getBuzzerState", () => {
@@ -169,49 +185,61 @@ io.on("connection", (socket) => {
     io.to(roomReset).emit("reset");
   });
 
-  /*
-  socket.on('sendMessage', (message, callback) => {
-    const user = getUser(socket.id);
-
-    io.to(user.room).emit('message', { user: user.name, text: message });
-
-    callback();
+  socket.on("exitRoom", function ({ room }) {
+    sessions[sessionID].room = undefined;
+    console.log("sessions after exit", sessions);
+    io.in(room).emit("updatePlayerList", {
+      users: state[room].users,
+    });
   });
-  */
 
   socket.on("disconnect", () => {
     console.log("sessionID " + sessionID + " disconnected");
     //check if user is in a room
     if (sessionID) {
       if (sessions[sessionID]) {
-        console.log("disconnecting sessions[sessionID]: ", sessions[sessionID]);
         if (sessions[sessionID].hasOwnProperty("room")) {
           const roomToLeave = sessions[sessionID].room;
-          //remove user from room state
-          console.log(
-            "removing " +
-              sessions[sessionID].username +
-              "from room: " +
-              roomToLeave
-          );
-          const i = state[roomToLeave].users.indexOf(
-            sessions[sessionID].username
-          );
-          state[roomToLeave].users.splice(i, 1);
-          console.log(
-            "users remaining after removal: ",
-            state[roomToLeave].users
-          );
+          console.log("roomToLeave", roomToLeave);
+          console.log("state[roomToLeave]", state[roomToLeave]);
+          if (roomToLeave && state[roomToLeave]) {
+            //remove user from room state
+            console.log(
+              "removing " +
+                sessions[sessionID].username +
+                "from room: " +
+                roomToLeave
+            );
 
-          io.in(roomToLeave).emit("updatePlayerList", {
-            users: state[roomToLeave].users,
-          });
+            const i = state[roomToLeave].users.indexOf(
+              sessions[sessionID].username
+            );
+            state[roomToLeave].users.splice(i, 1);
 
-          // TODO:
-          // if room is empty - delete it from the state object
+            io.in(roomToLeave).emit("updatePlayerList", {
+              users: state[roomToLeave].users,
+            });
+
+            if (
+              state[roomToLeave].users.length > 0 &&
+              state[roomToLeave].admin === sessions[sessionID].username
+            ) {
+              state[roomToLeave].admin = state[roomToLeave].users[0];
+              io.in(roomToLeave).emit("updateAdmin", {
+                roomToUpdate: roomToLeave,
+                newAdmin: state[roomToLeave].users[0],
+              });
+            }
+            if (state[roomToLeave].users.length === 0) {
+              delete state[roomToLeave];
+              // socket.emit("roomDeleted", roomToLeave);
+            }
+          }
         } else {
           console.log("no room found to remove the user from");
         }
+        console.log("sessions after disconnect", sessions);
+        console.log("state after disconnect", state);
       }
     }
   });

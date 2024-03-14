@@ -16,3 +16,7 @@
 .button:hover {
     background-color: hsl(210deg,15%,10%);
 }
+
+.exit-btn {
+    background-color: hsl(4, 67%, 55%);
+}

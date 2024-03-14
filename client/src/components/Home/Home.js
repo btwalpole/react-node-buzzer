@@ -32,11 +32,12 @@ function Home({ name, room, handleRoomChange, handleNewGame, handleJoinGame }) {
 
   return (
     <div className="homeScreen">
-      <h1 className="title">Epic Quiz Buzzer</h1>
+      <h1 className="title">
+        Benji's Very Cool Buzzer That Definitely Always Works Super Good
+      </h1>
       <a
         className="logoAttribution"
-        href="https://www.freepik.com/vectors/isometric-illustration"
-        alt="buzzer logo"
+        alt="https://www.freepik.com/vectors/isometric-illustration"
       >
         <img className="logo" src="quizLogo.jpg" alt="quizLogo" />
       </a>

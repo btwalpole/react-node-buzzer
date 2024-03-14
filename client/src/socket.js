@@ -6,7 +6,7 @@ import { io } from "socket.io-client";
 //URL on gitpod
 //const URL = "https://5000-btwalpole-reactnodebuzz-sm1gmvmjrdp.ws-eu47.gitpod.io/"
 
-//URL on render
+//URL on Render
 const URL = "https://react-node-buzzer.onrender.com";
 const socket = io(URL, { autoConnect: false, auth: {} });
 

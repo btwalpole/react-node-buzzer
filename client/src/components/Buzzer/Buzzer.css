@@ -1,10 +1,17 @@
-
+h1, h2 {
+    font-weight: lighter;
+}
 .gameScreen {
     display: flex;
     align-items: center;
     flex-direction: column;
     justify-content: space-around;
     width: 100%;
+}
+
+.buttons {
+    display: flex;
+    flex-direction: row;
 }
 
 .disabled-reset {
