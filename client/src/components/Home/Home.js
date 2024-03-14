@@ -35,12 +35,12 @@ function Home({ name, room, handleRoomChange, handleNewGame, handleJoinGame }) {
       <h1 className="title">
         Benji's Very Cool Buzzer That Definitely Always Works Super Good
       </h1>
-      <a
+      <div
         className="logoAttribution"
-        alt="https://www.freepik.com/vectors/isometric-illustration"
+        // alt="https://www.freepik.com/vectors/isometric-illustration"
       >
         <img className="logo" src="quizLogo.jpg" alt="quizLogo" />
-      </a>
+      </div>
       <div className="homeForms">
         <h2 className="welcome">
           Hi <span className="homeUserName">{name}</span>!
